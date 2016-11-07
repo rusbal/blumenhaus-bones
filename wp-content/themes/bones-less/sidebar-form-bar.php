@@ -1,3 +1,8 @@
+<?php
+
+require_once 'includes/html_helper.php';
+
+?>
 				<div id="sidebar-form-bar" class="white first-ordering-form " role="complementary">
 					<div class="wrap">
 
@@ -14,69 +19,72 @@
 
 								<div class="four-md-col three-xs-col middle-gap">
 									<div class="form-items">
-										<select name="blumenschmuck_bar">
-											<option value="0">BLUMENSCHMUCK</option>
-											<option value="BLUMENSTRASS">BLUMENSTRASS</option>	
-											<option value="BLUMENKORB">BLUMENKORB</option>	
-											<option value="BLUMENHERZ">BLUMENHERZ</option>	
-											<option value="ROSEN">ROSEN</option>	
-											<option value="ORCHIDEEN-PFLANZE">ORCHIDEEN-PFLANZE</option>	
-										</select>
+										<?php
+										echo $Html->Form->select('blumenschmuck_bar', false, [
+											"0"=>'BLUMENSCHMUCK',
+											"BLUMENSTRASS"=>'BLUMENSTRASS',
+											"BLUMENKORB"=>'BLUMENKORB',
+											"BLUMENHERZ"=>'BLUMENHERZ',
+											"ROSEN"=>'ROSEN',
+											"ORCHIDEEN-PFLANZE"=>'ORCHIDEEN-PFLANZE'
+										], ['selected' => $_POST['blumenschmuck_bar']]);
 
-										<select name="preisrahamen_bar">
-											<option value="0">PREISRAHMEN</option>
-											<option value="CHF 30.–">CHF 30.–</option>	
-											<option value="CHF 50.–">CHF 50.–</option>	
-											<option value="CHF 75.–">CHF 75.–</option>
-											<option value="CHF 100.–">CHF 100.–</option>
-											<option value="CHF 150.–">CHF 150.–</option>
-											<option value="CHF 200.–">CHF 200.–</option>
-											<option value="CHF 250.–">CHF 250.–</option>
-											<option value="CHF 300.–">CHF 300.–</option>
-											<option value="CHF 500.–">CHF 500.–</option>
-											<option value="CHF 800.–">CHF 800.–</option>
-											<option value="CHF 1’000.–">CHF 1’000.–</option>
-
-										</select>		
+										echo $Html->Form->select('preisrahamen_bar', false, [
+											"0"=>'PREISRAHMEN',
+											"CHF 30.–"=>'CHF 30.–',
+											"CHF 50.–"=>'CHF 50.–',
+											"CHF 75.–"=>'CHF 75.–',
+											"CHF 100.–"=>'CHF 100.–',
+											"CHF 150.–"=>'CHF 150.–',
+											"CHF 200.–"=>'CHF 200.–',
+											"CHF 250.–"=>'CHF 250.–',
+											"CHF 300.–"=>'CHF 300.–',
+											"CHF 500.–"=>'CHF 500.–',
+											"CHF 800.–"=>'CHF 800.–',
+											"CHF 1’000.–"=>'CHF 1’000.–',
+										], ['selected' => $_POST['preisrahamen_bar']]);
+										?>
 									</div>
 
 
 									<div class="form-items">
-										<select name="anlass_bar">
-											<option value="0">ANLASS</option>
-											<option value="GEBURTSTAG">GEBURTSTAG</option>	
-											<option value="ÜBERRASCHUNG">ÜBERRASCHUNG</option>
-											<option value="LIEBESERKLÄRUNG">LIEBESERKLÄRUNG</option>
-											<option value="HOCHZEIT">HOCHZEIT</option>
-											<option value="GEBURT">GEBURT</option>
-											<option value="DEKORATION/EVENT/FIRMENGESCHENK">DEKORATION/EVENT/FIRMENGESCHENK</option>	
-											<option value="TRAUERFLORISTIK/GRABSCHMUCK">TRAUERFLORISTIK/GRABSCHMUCK</option>				
-										</select>
+										<?php
+										echo $Html->Form->select('anlass_bar', false, [
+											"0"=>'ANLASS',
+											"GEBURTSTAG"=>'GEBURTSTAG',
+											"ÜBERRASCHUNG"=>'ÜBERRASCHUNG',
+											"LIEBESERKLÄRUNG"=>'LIEBESERKLÄRUNG',
+											"HOCHZEIT"=>'HOCHZEIT',
+											"GEBURT"=>'GEBURT',
+											"DEKORATION/EVENT/FIRMENGESCHENK"=>'DEKORATION/EVENT/FIRMENGESCHENK',
+											"TRAUERFLORISTIK/GRABSCHMUCK"=>'TRAUERFLORISTIK/GRABSCHMUCK',
+										], ['selected' => $_POST['anlass_bar']]);
 
-										<select name="blumenfarbe_bar">
-											<option value="0">Blumenfarbe</option>
-											<option value="WEISS">WEISS</option>	
-											<option value="GELB">GELB</option>	
-											<option value="ROT">ROT</option>		
-											<option value="ROSA">ROSA</option>					
-											<option value="FUCHSIA">FUCHSIA</option>	
-											<option value="ORANGE">ORANGE</option>	
-											<option value="OVIOLETT">VIOLETT</option>	
-											<option value="BLAU">BLAU</option>	
-											<option value="GRÜN">GRÜN</option>		
-										</select>		
-									</div> 
-
+										echo $Html->Form->select('blumenfarbe_bar', false, [
+											"0"=>'Blumenfarbe',
+											"WEISS"=>'WEISS',
+											"GELB"=>'GELB',
+											"ROT"=>'ROT',
+											"ROSA"=>'ROSA',
+											"FUCHSIA"=>'FUCHSIA',
+											"ORANGE"=>'ORANGE',
+											"OVIOLETT"=>'VIOLETT',
+											"BLAU"=>'BLAU',
+											"GRÜN"=>'GRÜN',
+										], ['selected' => $_POST['blumenfarbe_bar']]);
+										?>
+									</div>
 
 									<div class="form-items">
-										<select name="karte_bar">
-											<option value="MIT KARTE">MIT KARTE</option>
-											<option value="OHNE KARTE">OHNE KARTE</option>	
+										<?php
+										echo $Html->Form->select('karte_bar', false, [
+											"MIT KARTE"=>'MIT KARTE',
+											"OHNE KARTE"=>'OHNE KARTE'
+										], ['selected' => $_POST['karte_bar']]);
+										?>
 
-										</select>
-<input type="text" name="lieferdatum_bar" id="date" placeholder="Tag/Monat/Jahr">
-
-									</div> 
+										<input class="date" name="lieferdatum_bar" id="lieferdatum_bar" placeholder="Tag/Monat/Jahr" type="text" value="<?= $_POST['lieferdatum_bar'] ?>">
+									</div>
 
 									<div class="form-right">
 										<div class="submit-button-wrp">

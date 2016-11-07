@@ -1,0 +1,5 @@
+{
+    "require": {
+        "snscripts/html-helper": "1.*"
+    }
+}
