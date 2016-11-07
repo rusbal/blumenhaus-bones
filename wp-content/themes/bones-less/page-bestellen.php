@@ -6,120 +6,137 @@ Template Name: Bestellen
 
 */
 
-
+require_once 'includes/mail_helper.php';
 
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-	$message = '<html><head><title>Bestellen</title></head><body>';
+	if ($_POST['form-name'] == 'blumenbestellung') {
 
-	$message.='<strong>Rechnungsadresse</strong><br><br>';
-	if(isset($_POST['private'])){
-		$message.= '<strong>Privatperson or firma:</strong> '.$_POST['private'].'<br>'; 
-	}
-	
-	if(isset($_POST['Vorname'])){
-		$message.= '<strong>Name:</strong> '.$_POST['Vorname'].'<br>'; 
-	}
+		$simpleMail = new SimpleEmailBuilder;
+		$simpleMail->header('Blumenbestellung');
+		$simpleMail->line('Blumenschmuck', 'blumenschmuck_bar', 'Bestellinformationen');
+		$simpleMail->line('Preisrahmen', 'preisrahamen_bar');
+		$simpleMail->line('Anlass', 'anlass_bar');
+		$simpleMail->line('Blumenfarbe', 'blumenfarbe_bar');
+		$simpleMail->line('Karte', 'karte_bar');
+		$simpleMail->line('Lieferdatum', 'lieferdatum_bar');
+		$message = $simpleMail->render();
 
-	if(isset($_POST['Strasse'])){
-		$message.= '<strong>Strasse:</strong> '.$_POST['Strasse'].'<br>'; 
-	}
+		$recipients = [];
+//			'ingo.grunig@gmail.com',
+//		];
 
-	if(isset($_POST['PlzOrt'])){
-		$message.= '<strong>Plz, Ort:</strong> '.$_POST['PlzOrt'].'<br>'; 
-	}
-
-	if(isset($_POST['Telefon'])){
-		$message.= '<strong>Telefon:</strong> '.$_POST['Telefon'].'<br>'; 
+		send_mail($recipients, 'Blumenbestellung', $message);
 	}
 
-	if(isset($_POST['E-mail'])){
-		$message.= '<strong>E-mail:</strong> '.$_POST['E-mail'].'<br><br><br>'; 
-	}
+	if ($_POST['form-name'] == 'bestellen') {
+		$message = '<html><head><title>Bestellen</title></head><body>';
 
-
-	$message.='<strong>Lieferadresse</strong><br><br>';
-	if(isset($_POST['sameAsBilling'])){
-		$message.= '<strong>Same As Billing:</strong> Ja<br><br><br>'; 
-	}
-	else{
-		$message.= '<strong>Same As Billing:</strong> Nein<br>'; 
-
-		if(isset($_POST['liefeVorname'])){
-			$message.= '<strong>Name:</strong> '.$_POST['liefeVorname'].'<br>'; 
+		$message .= '<strong>Rechnungsadresse</strong><br><br>';
+		if ( isset( $_POST['private'] ) ) {
+			$message .= '<strong>Privatperson or firma:</strong> ' . $_POST['private'] . '<br>';
 		}
 
-		if(isset($_POST['liefeStrasse'])){
-			$message.= '<strong>Strasse:</strong> '.$_POST['liefeStrasse'].'<br>'; 
+		if ( isset( $_POST['Vorname'] ) ) {
+			$message .= '<strong>Name:</strong> ' . $_POST['Vorname'] . '<br>';
 		}
 
-		if(isset($_POST['liefePlzOrt'])){
-			$message.= '<strong>Plz, Ort:</strong> '.$_POST['liefePlzOrt'].'<br>'; 
+		if ( isset( $_POST['Strasse'] ) ) {
+			$message .= '<strong>Strasse:</strong> ' . $_POST['Strasse'] . '<br>';
 		}
 
-		if(isset($_POST['liefeTelefon'])){
-			$message.= '<strong>Telefon:</strong> '.$_POST['liefeTelefon'].'<br>'; 
+		if ( isset( $_POST['PlzOrt'] ) ) {
+			$message .= '<strong>Plz, Ort:</strong> ' . $_POST['PlzOrt'] . '<br>';
 		}
 
-		if(isset($_POST['liefeE-mail'])){
-			$message.= '<strong>E-mail:</strong> '.$_POST['liefeE-mail'].'<br><br><br>'; 
+		if ( isset( $_POST['Telefon'] ) ) {
+			$message .= '<strong>Telefon:</strong> ' . $_POST['Telefon'] . '<br>';
 		}
 
+		if ( isset( $_POST['E-mail'] ) ) {
+			$message .= '<strong>E-mail:</strong> ' . $_POST['E-mail'] . '<br><br><br>';
+		}
+
+
+		$message .= '<strong>Lieferadresse</strong><br><br>';
+		if ( isset( $_POST['sameAsBilling'] ) ) {
+			$message .= '<strong>Same As Billing:</strong> Ja<br><br><br>';
+		} else {
+			$message .= '<strong>Same As Billing:</strong> Nein<br>';
+
+			if ( isset( $_POST['liefeVorname'] ) ) {
+				$message .= '<strong>Name:</strong> ' . $_POST['liefeVorname'] . '<br>';
+			}
+
+			if ( isset( $_POST['liefeStrasse'] ) ) {
+				$message .= '<strong>Strasse:</strong> ' . $_POST['liefeStrasse'] . '<br>';
+			}
+
+			if ( isset( $_POST['liefePlzOrt'] ) ) {
+				$message .= '<strong>Plz, Ort:</strong> ' . $_POST['liefePlzOrt'] . '<br>';
+			}
+
+			if ( isset( $_POST['liefeTelefon'] ) ) {
+				$message .= '<strong>Telefon:</strong> ' . $_POST['liefeTelefon'] . '<br>';
+			}
+
+			if ( isset( $_POST['liefeE-mail'] ) ) {
+				$message .= '<strong>E-mail:</strong> ' . $_POST['liefeE-mail'] . '<br><br><br>';
+			}
+
+		}
+
+		$message .= '<strong>Ihre Bestellung</strong><br><br>';
+		if ( isset( $_POST['preisrahamen'] ) && $_POST['preisrahamen'] != 0 ) {
+			$message .= '<strong>Preisrahamen:</strong> ' . $_POST['preisrahamen'] . '<br>';
+		}
+
+		if ( isset( $_POST['blumenart'] ) && $_POST['blumenart'] != 0 ) {
+			$message .= '<strong>Blumenart:</strong> ' . $_POST['blumenart'] . '<br>';
+		}
+
+		if ( isset( $_POST['blumenfarbe'] ) && $_POST['blumenfarbe'] != 0 ) {
+			$message .= '<strong>Blumenfarbe:</strong> ' . $_POST['blumenfarbe'] . '<br>';
+		}
+
+		if ( isset( $_POST['karte'] ) ) {
+			$message .= '<strong>karte:</strong> ' . $_POST['karte'] . '<br>';
+		}
+
+		if ( isset( $_POST['aus_karte'] ) && $_POST['aus_karte'] != 0 ) {
+			$message .= '<strong>Auswählen:</strong> ' . $_POST['aus_karte'] . '<br>';
+		}
+
+		if ( isset( $_POST['kartentext'] ) ) {
+			$message .= '<strong>Kartentext:</strong> ' . $_POST['kartentext'] . '<br>';
+		}
+
+		if ( isset( $_POST['anlass'] ) && $_POST['anlass'] != 0 ) {
+			$message .= '<strong>Anlass:</strong> ' . $_POST['anlass'] . '<br>';
+		}
+
+		if ( isset( $_POST['date'] ) ) {
+			$message .= '<strong>Lieferdatum:</strong> ' . $_POST['date'] . '<br>';
+		}
+
+		if ( isset( $_POST['time'] ) ) {
+			$message .= '<strong>Zeit:</strong> ' . $_POST['time'] . '<br>';
+		}
+
+		if ( isset( $_POST['anmerkungen'] ) ) {
+			$message .= '<strong>Anmerkungen:</strong> ' . $_POST['anmerkungen'] . '<br>';
+		}
+
+
+		$message .= '</body></html>';
+
+		$recipients = [
+			'ingo.grunig@gmail.com',
+		];
+		send_mail( $recipients, 'Bestellen', $message );
 	}
-
-	$message.='<strong>Ihre Bestellung</strong><br><br>';
-	if(isset($_POST['preisrahamen']) && $_POST['preisrahamen'] != 0){
-		$message.= '<strong>Preisrahamen:</strong> '.$_POST['preisrahamen'].'<br>';
-	}
-
-	if(isset($_POST['blumenart']) && $_POST['blumenart'] != 0){
-		$message.= '<strong>Blumenart:</strong> '.$_POST['blumenart'].'<br>';
-	}
-
-	if(isset($_POST['blumenfarbe']) && $_POST['blumenfarbe'] != 0){
-		$message.= '<strong>Blumenfarbe:</strong> '.$_POST['blumenfarbe'].'<br>';
-	}
-
-	if(isset($_POST['karte'])){
-		$message.= '<strong>karte:</strong> '.$_POST['karte'].'<br>';
-	}
-
-	if(isset($_POST['aus_karte']) && $_POST['aus_karte'] != 0){
-		$message.= '<strong>Auswählen:</strong> '.$_POST['aus_karte'].'<br>';
-	}
-
-	if(isset($_POST['kartentext'])){
-		$message.= '<strong>Kartentext:</strong> '.$_POST['kartentext'].'<br>';
-	}
-
-	if(isset($_POST['anlass']) && $_POST['anlass'] != 0){
-		$message.= '<strong>Anlass:</strong> '.$_POST['anlass'].'<br>';
-	}
-
-	if(isset($_POST['date'])){
-		$message.= '<strong>Lieferdatum:</strong> '.$_POST['date'].'<br>';
-	}
-
-	if(isset($_POST['time'])){
-		$message.= '<strong>Zeit:</strong> '.$_POST['time'].'<br>';
-	}
-
-	if(isset($_POST['anmerkungen'])){
-		$message.= '<strong>Anmerkungen:</strong> '.$_POST['anmerkungen'].'<br>';
-	}
-	
-	
-
-	$message.='</body></html>';
-
-	$headers  = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-	// mail('matijevicstefan@gmail.com', 'Bestellen', $message, $headers);
-	mail('ingo.grunig@gmail.com', 'Bestellen', $message, $headers);
-	mail('raymond@philippinedev.com', 'Bestellen', $message, $headers);
 }
 
 ?>
@@ -163,6 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 							<div role="form">
 
 								<form method="post">
+									<?php echo $Html->Form->hidden('form-name', ['value' => 'bestellen']); ?>
 
 									<div class="clearfix">
 										<div class="half-15">

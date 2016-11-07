@@ -1,6 +1,6 @@
 <?php
 
-require_once 'includes/html_helper.php';
+require 'includes/html_helper.php';
 
 ?>
 				<div id="sidebar-form-bar" class="white first-ordering-form " role="complementary">
@@ -16,7 +16,7 @@ require_once 'includes/html_helper.php';
 
 						<div class="sidebar-form">
 							<form action="<?php echo get_page_link( get_page_by_title('Bestellen')->ID ); ?>" method="post">
-
+								<?php echo $Html->Form->hidden('form-name', ['value' => 'blumenbestellung']); ?>
 								<div class="four-md-col three-xs-col middle-gap">
 									<div class="form-items">
 										<?php
