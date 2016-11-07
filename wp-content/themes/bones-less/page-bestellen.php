@@ -117,7 +117,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
-	mail('matijevicstefan@gmail.com', 'Bestellen', $message, $headers);
+	// mail('matijevicstefan@gmail.com', 'Bestellen', $message, $headers);
+	mail('ingo.grunig@gmail.com', 'Bestellen', $message, $headers);
+	mail('raymond@philippinedev.com', 'Bestellen', $message, $headers);
 }
 
 ?>
@@ -236,9 +238,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												</div>
 												<div class="input-40"> 
 													<select name="preisrahamen">
-														<option value="0">Preisrahamen</option>
-														<option value="1">Test</option>	
-														<option value="2">Test 2</option>							
+<option value="">...</option>
+<option value="Chf. 30.-">Chf. 30.-</option>
+<option value="Chf. 50.-">Chf. 50.-</option>
+<option value="Chf. 75.-">Chf. 75.-</option>
+<option value="Chf. 100.-">Chf. 100.-</option>
+<option value="Chf. 150.-">Chf. 150.-</option>
+<option value="Chf. 200.-">Chf. 200.-</option>
+<option value="Chf. 250.-">Chf. 250.-</option>
+<option value="Chf. 300.-">Chf. 300.-</option>
+<option value="Chf. 500.-">Chf. 500.-</option>
+<option value="Chf. 800.-">Chf. 800.-</option>
+<option value="Chf. 1000.-">Chf. 1000.-</option>
+<option value="Tel. besprechen">Tel. besprechen</option>						
 													</select>
 												</div>
 											</div>
@@ -248,9 +260,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												</div>
 												<div class="input-40"> 
 													<select name="blumenart">
-														<option value="0">Blumenart</option>
-														<option value="1">Test</option>	
-														<option value="2">Test 2</option>							
+<option value="">...</option>
+<option value="Blumenstrauss">Blumenstrauss</option>
+<option value="Blumenkorb">Blumenkorb</option>
+<option value="Blumenherz">Blumenherz</option>
+<option value="Rosen">Rosen</option>
+<option value="Orchideen-Pflanze">Orchideen-Pflanze</option>
+<option value="Tel. besprechen">Tel. besprechen</option>
 													</select>
 												</div>
 											</div>
@@ -260,9 +276,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												</div>
 												<div class="input-40"> 
 													<select name="blumenfarbe">
-														<option value="0">Blumenfarbe</option>
-														<option value="1">Test</option>	
-														<option value="2">Test 2</option>							
+<option value="">...</option>
+<option value="Weiss">Weiss</option>
+<option value="Gelb">Gelb</option>
+<option value="Rot">Rot</option>
+<option value="Rosa">Rosa</option>
+<option value="Fuchsia">Fuchsia</option>
+<option value="Orange">Orange</option>
+<option value="Violett">Violett</option>
+<option value="Blau">Blau</option>
+<option value="Grün">Grün</option>							
 													</select>
 												</div>
 											</div>
@@ -275,9 +298,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												</div>
 												<div class="input-40">
 													<select name="aus_karte">
-														<option value="0">Auswählen</option>
-														<option value="1">Test</option>	
-														<option value="2">Test 2</option>							
+<option value="">...</option>
+<option value="Keine">Keine</option>
+<option value="Sonnenschein">Sonnenschein</option>
+<option value="Rosenkavalier">Rosenkavalier</option>
+<option value="Von Herzen">Von Herzen</option>
+<option value="Happy Day">Happy Day</option>
+<option value="Viel Glück">Viel Glück</option>
+<option value="Edle Rose">Edle Rose</option>
+<option value="Baby">Baby</option>
 													</select>
 												</div>
 											</div>
@@ -296,9 +325,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												</div>
 												<div class="input-40"> 
 													<select name="anlass">
-														<option value="0">Anlass</option>
-														<option value="1">Test</option>	
-														<option value="2">Test 2</option>							
+<option value="">...</option>
+<option value="Geburstag">Geburstag</option>
+<option value="Überraschung">Überraschung</option>
+<option value="Liebeserklärung">Liebeserklärung</option>
+<option value="Hochzeit">Hochzeit</option>
+<option value="Geburt">Geburt</option>
+<option value="Dekoration - Event - Firmengeschenk">Dekoration - Event - Firmengeschenk</option>
+<option value="Trauerfloristik - Grabschmuck">Trauerfloristik - Grabschmuck</option>
+<option value="Tel. besprechen">Tel. besprechen</option>
 													</select>
 												</div>
 											</div>

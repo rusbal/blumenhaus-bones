@@ -18,7 +18,7 @@
 
 
 
-	<title><?php wp_title(''); ?></title>
+	<title>Blumenhaus Wiedikon <?php wp_title(''); ?></title>
 
 
 
@@ -125,7 +125,7 @@
 
 								<div class="social-icons">
 
-									<a href="#" class="fbp ic"></a>
+									<a href="https://www.facebook.com/blumenhaus.wiedikon/" class="fbp ic"></a>
 									<a href="#">GefÄllt mir </a>
 									<a href="#">TEILEN</a>
 
