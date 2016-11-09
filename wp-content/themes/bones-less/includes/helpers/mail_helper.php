@@ -18,7 +18,9 @@ function send_mail($subject, $message, $recipients = []) {
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
 	foreach ($recipients as $recipient) {
-		mail($recipient, $subject, $message, $headers);
+		if(filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+			mail( $recipient, $subject, $message, $headers );
+		}
 	}
 }
 

@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Zeit', 'time');
 			$simpleMail->line('Anmerkungen', 'anmerkungen');
 
-			send_mail('Bestellen', $simpleMail->render());
+			send_mail('Bestellen', $simpleMail->render(), [$_POST['E-mail'], $_POST['liefeE-mail']]);
 
 			header("Location: " . $_SERVER['HTTP_HOST'] . "/danke-fur-ihre-bestellung");
 			exit;
