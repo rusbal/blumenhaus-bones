@@ -83,7 +83,7 @@ class SimpleEmailBuilder
 		}
 		return '<html>'
 			. '<head>' . $this->head . '</head>'
-		    . '<body>' . implode($this->body) . '</body>'
+		    . '<body>' . implode("\n", $this->body) . '</body>'
 			. '</html>';
 	}
 

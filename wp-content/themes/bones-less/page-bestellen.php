@@ -55,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Plz, Ort', 'PlzOrt');
 			$simpleMail->line('Telefon', 'Telefon');
 			$simpleMail->line('E-mail', 'E-mail');
+			$simpleMail->addLineBreak(2);
 
 			$simpleMail->sectionTitle('Lieferadresse');
 			$simpleMail->line('Same As Billing', [
