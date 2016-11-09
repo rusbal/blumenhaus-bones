@@ -88,7 +88,7 @@ $Html = htmlHelper();
 										]);
 										?>
 
-										<input class="date" name="lieferdatum" id="lieferdatum" placeholder="Tag/Monat/Jahr" type="text" value="<?= $_POST['lieferdatum_bar'] ?>">
+										<input class="date" name="lieferdatum" id="lieferdatum" placeholder="Tag/Monat/Jahr" type="text">
 									</div>
 
 									<div class="form-right">

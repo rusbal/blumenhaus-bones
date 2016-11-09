@@ -17,7 +17,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->obj->success());
 	}
 
-	function itestValidateBadInput()
+	function testValidateBadInput()
 	{
 		$this->obj = new Validator(
 			[ 'E-mail' => 'required' ],

@@ -33,10 +33,15 @@ class SimpleEmailBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	private function noNextLine($string)
+	{
+		return str_replace("\n", '', $string);
+	}
+
 	public function testCanProcessSectionTitle()
 	{
 		$expected = '<html><head></head><body><strong>Name</strong><br><br></body></html>';
-		$this->assertEquals($expected, $this->obj->sectionTitle('Name')->render());
+		$this->assertEquals($expected, $this->noNextLine($this->obj->sectionTitle('Name')->render()));
 	}
 
 	public function testCanProcessLine()
