@@ -19,7 +19,8 @@ sidebars, comments, ect.
 
 
 /************* INCLUDE NEEDED FILES ***************/
-require_once 'includes/html_helper.php';
+require __DIR__ . '/vendor/autoload.php';
+$Html = htmlHelper();
 
 /*
 

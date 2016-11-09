@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="phpunit-bootstrap.php">
+    <testsuites>
+        <testsuite name="EmailBuilder Test Suite">
+            <directory>./includes/Rsu/EmailBuilder/tests/unit</directory>
+        </testsuite>
+        <testsuite name="Validator Test Suite">
+            <directory>./includes/Rsu/Validator/tests/unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
