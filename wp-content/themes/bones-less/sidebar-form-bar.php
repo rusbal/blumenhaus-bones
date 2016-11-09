@@ -5,28 +5,6 @@ use Rsu\Validator\Validator;
 require __DIR__ . '/vendor/autoload.php';
 $Html = htmlHelper();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	if ( $_POST['form-name'] == 'blumenbestellung' ) {
-		/**
-		 * Validation
-		 */
-		$validationRule = [
-			'blumenschmuck_bar' => 'required',
-			'preisrahamen_bar'  => 'required',
-			'anlass_bar'        => 'required',
-			'blumenfarbe_bar'   => 'required',
-			'karte_bar'         => 'required',
-			'lieferdatum_bar'   => 'required',
-		];
-
-		$val = new Validator($validationRule, $_POST);
-		$val->run();
-	}
-}
-
-if (!isset($val)) {
-	$val = new Validator();
-}
 ?>
 				<div id="sidebar-form-bar" class="white first-ordering-form " role="complementary">
 					<div class="wrap">
@@ -41,80 +19,76 @@ if (!isset($val)) {
 
 						<div class="sidebar-form">
 							<form action="<?php echo get_page_link( get_page_by_title('Bestellen')->ID ); ?>" method="post">
-								<?php echo $Html->Form->hidden('form-name', ['value' => 'blumenbestellung']); ?>
 								<div class="four-md-col three-xs-col middle-gap">
 									<div class="form-items">
 										<?php
-										echo $val->error('blumenschmuck_bar');
-										echo $Html->Form->select('blumenschmuck_bar', false, [
+										echo $Html->Form->select('blumenart', false, [
 											""=>'BLUMENSCHMUCK',
-											"BLUMENSTRASS"=>'BLUMENSTRASS',
-											"BLUMENKORB"=>'BLUMENKORB',
-											"BLUMENHERZ"=>'BLUMENHERZ',
-											"ROSEN"=>'ROSEN',
-											"ORCHIDEEN-PFLANZE"=>'ORCHIDEEN-PFLANZE'
-										], ['selected' => $_POST['blumenschmuck_bar']]);
+											"Blumenstrauss" => 'Blumenstrauss',
+											"Blumenkorb" => 'Blumenkorb',
+											"Blumenherz" => 'Blumenherz',
+											"Rosen" => 'Rosen',
+											"Orchideen-Pflanze" => 'Orchideen-Pflanze',
+											"Tel. besprechen" => 'Tel. besprechen',
+										]);
 
-										echo $val->error('preisrahamen_bar');
-										echo $Html->Form->select('preisrahamen_bar', false, [
+										echo $Html->Form->select('preisrahamen', false, [
 											""=>'PREISRAHMEN',
-											"CHF 30.–"=>'CHF 30.–',
-											"CHF 50.–"=>'CHF 50.–',
-											"CHF 75.–"=>'CHF 75.–',
-											"CHF 100.–"=>'CHF 100.–',
-											"CHF 150.–"=>'CHF 150.–',
-											"CHF 200.–"=>'CHF 200.–',
-											"CHF 250.–"=>'CHF 250.–',
-											"CHF 300.–"=>'CHF 300.–',
-											"CHF 500.–"=>'CHF 500.–',
-											"CHF 800.–"=>'CHF 800.–',
-											"CHF 1’000.–"=>'CHF 1’000.–',
-										], ['selected' => $_POST['preisrahamen_bar']]);
+											"Chf. 30.-" => 'Chf. 30.-',
+											"Chf. 50.-" => 'Chf. 50.-',
+											"Chf. 75.-" => 'Chf. 75.-',
+											"Chf. 100.-" => 'Chf. 100.-',
+											"Chf. 150.-" => 'Chf. 150.-',
+											"Chf. 200.-" => 'Chf. 200.-',
+											"Chf. 250.-" => 'Chf. 250.-',
+											"Chf. 300.-" => 'Chf. 300.-',
+											"Chf. 500.-" => 'Chf. 500.-',
+											"Chf. 800.-" => 'Chf. 800.-',
+											"Chf. 1000.-" => 'Chf. 1000.-',
+											"Tel. besprechen" => 'Tel. besprechen'
+										]);
 										?>
 									</div>
 
 
 									<div class="form-items">
 										<?php
-										echo $val->error('anlass_bar');
-										echo $Html->Form->select('anlass_bar', false, [
+										echo $Html->Form->select('anlass', false, [
 											""=>'ANLASS',
-											"GEBURTSTAG"=>'GEBURTSTAG',
-											"ÜBERRASCHUNG"=>'ÜBERRASCHUNG',
-											"LIEBESERKLÄRUNG"=>'LIEBESERKLÄRUNG',
-											"HOCHZEIT"=>'HOCHZEIT',
-											"GEBURT"=>'GEBURT',
-											"DEKORATION/EVENT/FIRMENGESCHENK"=>'DEKORATION/EVENT/FIRMENGESCHENK',
-											"TRAUERFLORISTIK/GRABSCHMUCK"=>'TRAUERFLORISTIK/GRABSCHMUCK',
-										], ['selected' => $_POST['anlass_bar']]);
+											"Geburstag" => 'Geburstag',
+											"Überraschung" => 'Überraschung',
+											"Liebeserklärung" => 'Liebeserklärung',
+											"Hochzeit" => 'Hochzeit',
+											"Geburt" => 'Geburt',
+											"Dekoration - Event - Firmengeschenk" => 'Dekoration - Event - Firmengeschenk',
+											"Trauerfloristik - Grabschmuck" => 'Trauerfloristik - Grabschmuck',
+											"Tel. besprechen" => 'Tel. besprechen',
+										]);
 
-										echo $val->error('blumenfarbe_bar');
-										echo $Html->Form->select('blumenfarbe_bar', false, [
+										echo $Html->Form->select('blumenfarbe', false, [
 											""=>'Blumenfarbe',
-											"WEISS"=>'WEISS',
-											"GELB"=>'GELB',
-											"ROT"=>'ROT',
-											"ROSA"=>'ROSA',
-											"FUCHSIA"=>'FUCHSIA',
-											"ORANGE"=>'ORANGE',
-											"OVIOLETT"=>'VIOLETT',
-											"BLAU"=>'BLAU',
-											"GRÜN"=>'GRÜN',
-										], ['selected' => $_POST['blumenfarbe_bar']]);
+											"Weiss" => 'Weiss',
+											"Gelb" => 'Gelb',
+											"Rot" => 'Rot',
+											"Rosa" => 'Rosa',
+											"Fuchsia" => 'Fuchsia',
+											"Orange" => 'Orange',
+											"Violett" => 'Violett',
+											"Blau" => 'Blau',
+											"Grün" => 'Grün',
+										]);
 										?>
 									</div>
 
 									<div class="form-items">
 										<?php
-										echo $val->error('karte_bar');
-										echo $Html->Form->select('karte_bar', false, [
-											"MIT KARTE"=>'MIT KARTE',
-											"OHNE KARTE"=>'OHNE KARTE'
-										], ['selected' => $_POST['karte_bar']]);
+										echo $Html->Form->select('karte', false, [
+											"Mit Karte"=>'MIT KARTE',
+											"Ohne Karte"=>'OHNE KARTE'
+										]);
 										?>
 
-										<?= $val->error('lieferdatum_bar') ?>
-										<input class="date" name="lieferdatum_bar" id="lieferdatum_bar" placeholder="Tag/Monat/Jahr" type="text" value="<?= $_POST['lieferdatum_bar'] ?>">
+										<input class="date" name="lieferdatum" id="lieferdatum" placeholder="Tag/Monat/Jahr" type="text" value="<?= $_POST['lieferdatum_bar'] ?>">
 									</div>
 
 									<div class="form-right">

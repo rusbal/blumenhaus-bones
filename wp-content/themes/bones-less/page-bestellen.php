@@ -12,41 +12,6 @@ use Rsu\Validator\Validator;
 $val = new Validator();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-
-	if ($_POST['form-name'] == 'blumenbestellung') {
-		/**
-		 * Validation
-		 */
-		$validationRule = [
-			'blumenschmuck_bar' => 'required',
-			'preisrahamen_bar' => 'required',
-			'anlass_bar' => 'required',
-			'blumenfarbe_bar' => 'required',
-			'karte_bar' => 'required',
-			'lieferdatum_bar' => 'required',
-		];
-
-		$val = new Validator($validationRule, $_POST);
-
-		if ($val->success()) {
-			$simpleMail = new SimpleEmailBuilder($_POST);
-			$simpleMail->header('Blumenbestellung');
-
-			$simpleMail->sectionTitle('Bestellinformationen');
-			$simpleMail->line('Blumenschmuck', 'blumenschmuck_bar');
-			$simpleMail->line('Preisrahmen', 'preisrahamen_bar');
-			$simpleMail->line('Anlass', 'anlass_bar');
-			$simpleMail->line('Blumenfarbe', 'blumenfarbe_bar');
-			$simpleMail->line('Karte', 'karte_bar');
-			$simpleMail->line('Lieferdatum', 'lieferdatum_bar');
-
-			send_mail('Blumenbestellung', $simpleMail->render());
-
-			header("Location: " . $_SERVER['HTTP_HOST'] . "/danke-fur-ihre-bestellung");
-			exit;
-		}
-	}
-
 	if ($_POST['form-name'] == 'bestellen') {
 
 		/**
@@ -72,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			'aus_karte' => 'required',
 			'kartentext' => 'required',
 			'anlass' => 'required',
-			'date' => 'required',
+			'lieferdatum' => 'required',
 			'time' => 'required',
 			'anmerkungen' => 'required',
 		];
@@ -113,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Auswählen', 'aus_karte', ['!=' => 0]);
 			$simpleMail->line('Kartentext', 'kartentext');
 			$simpleMail->line('Anlass', 'anlass', ['!=' => 0]);
-			$simpleMail->line('Lieferdatum', 'date');
+			$simpleMail->line('Lieferdatum', 'lieferdatum');
 			$simpleMail->line('Zeit', 'time');
 			$simpleMail->line('Anmerkungen', 'anmerkungen');
 
@@ -341,10 +306,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30 radios">
-													<input type="radio" name="karte" value="Onhe Karte" id="karte" checked> <label for="karte">Ohne Karte</label><div class="check"></div>
+													<input type="radio" name="karte" value="Onhe Karte" id="karte"
+														<?= ($_POST['karte'] == 'Ohne Karte') ? 'checked' : '' ?>
+													> <label for="karte">Ohne Karte</label><div class="check"></div>
 												</div>
 												<div class="input-30 radios">
-													<input type="radio" name="karte" value="Mit Karte" id="karte2"> <label for="karte2">Mit Karte</label><div class="check"></div>
+													<input type="radio" name="karte" value="Mit Karte" id="karte2"
+														<?= ($_POST['karte'] != 'Ohne Karte') ? 'checked' : '' ?>
+													> <label for="karte2">Mit Karte</label><div class="check"></div>
 												</div>
 												<div class="input-40">
 												<?php
@@ -405,8 +374,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 													<p>Lieferdatum</p>
 												</div>
 												<div class="input-40"> 
-													<?= $Html->Form->input('date', false, ['placeholder' => 'Tag/Monat/Jahr', 'class' => 'date' ]) ?>
-													<?= $val->error('date') ?>
+													<?= $Html->Form->input('lieferdatum', false, ['placeholder' => 'Tag/Monat/Jahr', 'class' => 'date' ]) ?>
+													<?= $val->error('lieferdatum') ?>
 												</div>
 											</div>
 											<div class="input-100 clearfix">
@@ -503,7 +472,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 </div> <!-- end #inner-content -->
 
-<?php get_sidebar('form-bar'); ?>
+<?php //get_sidebar('form-bar'); ?>
 
 </div> <!-- end #content -->
 
@@ -514,6 +483,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 jQuery(function($){
 	if ($('input[name=sameAsBilling]').is(':checked')) {
 		$('.whenNotSameAsBilling').attr('disabled', 'disabled');
+	}
+
+	if ($('#karte').is(':checked')) {
+		$('#Aus_karte').attr('disabled', 'disabled');
 	}
 });
 </script>
