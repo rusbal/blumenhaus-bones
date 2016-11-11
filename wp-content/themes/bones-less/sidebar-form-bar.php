@@ -29,7 +29,6 @@ $Html = htmlHelper();
 											"Blumenherz" => 'Blumenherz',
 											"Rosen" => 'Rosen',
 											"Orchideen-Pflanze" => 'Orchideen-Pflanze',
-											"Tel. besprechen" => 'Tel. besprechen',
 										]);
 
 										echo $Html->Form->select('preisrahamen', false, [
@@ -45,7 +44,6 @@ $Html = htmlHelper();
 											"Chf. 500.-" => 'Chf. 500.-',
 											"Chf. 800.-" => 'Chf. 800.-',
 											"Chf. 1000.-" => 'Chf. 1000.-',
-											"Tel. besprechen" => 'Tel. besprechen'
 										]);
 										?>
 									</div>
@@ -60,9 +58,8 @@ $Html = htmlHelper();
 											"Liebeserklärung" => 'Liebeserklärung',
 											"Hochzeit" => 'Hochzeit',
 											"Geburt" => 'Geburt',
-											"Dekoration - Event - Firmengeschenk" => 'Dekoration - Event - Firmengeschenk',
-											"Trauerfloristik - Grabschmuck" => 'Trauerfloristik - Grabschmuck',
-											"Tel. besprechen" => 'Tel. besprechen',
+											"Dekoration/Event/Firmengeschenk" => 'Dekoration/Event/Firmengeschenk',
+											"Trauerfloristik/Grabschmuck" => 'Trauerfloristik/Grabschmuck',
 										]);
 
 										echo $Html->Form->select('blumenfarbe', false, [

@@ -38,12 +38,7 @@
 			-webkit-filter: brightness(400%); /* Chrome, Safari, Opera */
 			filter: brightness(400%);
 			opacity: .7;
-			&:first-child{
-				margin:0px 10px 0px 0px !important;
-			}
-			&:last-child{
-				margin:0px 0px 0px 10px !important;
-			}
+			margin: 0 5px 0 0;
 		}
 	}
 
@@ -98,6 +93,9 @@
 	p {
 		margin-bottom: 15px;
 	}
+	i{
+		height: 14px;
+	}
 }
 #text-8 {
 	width: 100%;
@@ -108,9 +106,44 @@
 	p{
 		display: none;
 	}
+	i{
+		height: 12px;
+	}
 }
-
+#text-6 p.sml_email{
+	width: 86%;
+	float: left;
+}
+.page-template-page-bestellen{
+	#object2, #object3{
+		display: none;
+	}
+}
+#text-6 p.sml_submit{
+	width: 12%;
+	float: left;
+	margin-left: 2%;
+	position: relative;
+	input{
+		padding: 2px 5px 2px 5px;
+		margin-top: 4px;
+		font-size: 12px;
+		background-color: #95B172;
+	}
+	&:after{
+		content: '';
+		position: absolute;
+		z-index: 2;
+		border-top: 4px solid transparent;
+		border-bottom: 4px solid transparent;
+		border-left: 5px solid #fff;
+		top: 9px;
+		left: 12px;
+		pointer-events: none;
+	}
+}
 form {
+
 	input.sml_nameinput {
 		width: 45%;
 		float: left;
@@ -216,13 +249,11 @@ form {
 	#text-8 {
 		width: 25%;
 		border-right: 1px solid;
-		text-align: center;
+		text-align: left;
 		margin: 0;
-		padding-left: 30px;
+		padding-left: 70px;
 		p{
 			display: block;
-			text-align: left;
-			margin-left: 40px;
 		}
 	}
 

@@ -17,7 +17,10 @@ jQuery(document).ready(function($) {
 
 	});
 
-
+	$(".huge_it_slider_2 li").each(function() {
+		var im = $('img', this).attr('src');
+		$(this).css('background-image', 'url(' + im + ')');
+	});
 	$(function () {
 
 		if ($(window).width() > 767) {

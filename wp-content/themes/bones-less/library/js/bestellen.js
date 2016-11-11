@@ -39,16 +39,24 @@ jQuery(document).ready(function($) {
     	}
     });
 
-    
-    $('input[name=karte]').change(function() {
-    	console.log('change');
-        if (this.value == 'Onhe Karte') {
-            $("select[name='aus_karte']").prop('disabled', true);
-        }
-        else if (this.value == 'Mit Karte') {
-            $("select[name='aus_karte']").prop('disabled', false);
-        }
-    });
+    if($('#karte2').is(':checked')) { 
+       $("select[name='aus_karte']").prop('disabled', false);
+       $(".input-100.galerie").addClass( "sh" );
+       $(".t-ir").addClass( "huge" );
+   }
+   $('input[name=karte]').change(function() {
+    if (this.value.toUpperCase() == 'OHNE KARTE') {
+        $("select[name='aus_karte']").prop('disabled', true);
+        $(".input-100.galerie").removeClass( "sh" );
+        $(".t-ir").removeClass( "huge" );
+
+    }
+    else if (this.value.toUpperCase() == 'MIT KARTE') {
+        $("select[name='aus_karte']").prop('disabled', false);
+        $(".input-100.galerie").addClass( "sh" );
+        $(".t-ir").addClass( "huge" );
+    }
+});
 
 
 });

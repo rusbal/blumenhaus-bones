@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<p>Telefon</p>
 											</div>
 											<div class="input-70"> <span class="wpcf7-form-control-wrap Telefon">
-												<?= $Html->Form->input('Telefon', false, ['type' => 'tel', 'size' => '40', 'class' => 'wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-tel', 'aria-invalid' => 'false']) ?>
+												<?= $Html->Form->input('Telefon', false, ['type' => 'text', 'size' => '40', 'class' => 'wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-tel', 'aria-invalid' => 'false']) ?>
 												<?= $val->error('Telefon') ?>
 											</span></div>
 											<div class="input-30">
@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-40">
 												<?php
 												echo $Html->Form->select('preisrahamen', false, [
-													"" => '...',
+													"" => 'PREISRAHMEN',
 													"Chf. 30.-" => 'Chf. 30.-',
 													"Chf. 50.-" => 'Chf. 50.-',
 													"Chf. 75.-" => 'Chf. 75.-',
@@ -252,7 +252,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 													"Chf. 500.-" => 'Chf. 500.-',
 													"Chf. 800.-" => 'Chf. 800.-',
 													"Chf. 1000.-" => 'Chf. 1000.-',
-													"Tel. besprechen" => 'Tel. besprechen'
 												], [
 													'selected' => $_POST['preisrahamen'],
 												]);
@@ -267,13 +266,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-40">
 												<?php
 												echo $Html->Form->select('blumenart', false, [
-													"" => '...',
+													"" => 'BLUMENSCHMUCK',
 													"Blumenstrauss" => 'Blumenstrauss',
 													"Blumenkorb" => 'Blumenkorb',
 													"Blumenherz" => 'Blumenherz',
 													"Rosen" => 'Rosen',
 													"Orchideen-Pflanze" => 'Orchideen-Pflanze',
-													"Tel. besprechen" => 'Tel. besprechen',
 												], [
 													'selected' => $_POST['blumenart'],
 												]);
@@ -288,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-40">
 												<?php
 												echo $Html->Form->select('blumenfarbe', false, [
-													"" => '...',
+													"" => 'Blumenfarbe',
 													"Weiss" => 'Weiss',
 													"Gelb" => 'Gelb',
 													"Rot" => 'Rot',
@@ -319,8 +317,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-40">
 												<?php
 												echo $Html->Form->select('aus_karte', false, [
-													"" => '...',
-													"Keine" => 'Keine',
+													"" => 'Auswählen',
 													"Sonnenschein" => 'Sonnenschein',
 													"Rosenkavalier" => 'Rosenkavalier',
 													"Von Herzen" => 'Von Herzen',
@@ -335,11 +332,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<?= $val->error('aus_karte') ?>
 												</div>
 											</div>
+											<div class="input-100 galerie sh">
+												<div class="input-30"></div>
+												<div class="input-70 clearfix">
+													<div class="input-13">
+														<a href="/wp-content/themes/bones-less/library/images/g1.jpg" rel="lightbox" title="Sonnenschein"><img src="/wp-content/themes/bones-less/library/images/g1.jpg"></a>
+													</div>
+													<div class="input-13">
+														<a href="/wp-content/themes/bones-less/library/images/g2.jpg" rel="lightbox" title="Rosenkavalier"><img src="/wp-content/themes/bones-less/library/images/g2.jpg"></a>
+													</div>
+													<div class="input-13">
+														<a href="/wp-content/themes/bones-less/library/images/g3.jpg" rel="lightbox" title="Von Herzen"><img src="/wp-content/themes/bones-less/library/images/g3.jpg"></a>
+													</div>
+													<div class="input-13">
+														<a href="/wp-content/themes/bones-less/library/images/g4.jpg" rel="lightbox" title="Happy Day"><img src="/wp-content/themes/bones-less/library/images/g4.jpg"></a>
+													</div>
+													<div class="input-13">
+														<a href="/wp-content/themes/bones-less/library/images/g5.jpg" rel="lightbox" title="Viel Glück"><img src="/wp-content/themes/bones-less/library/images/g5.jpg"></a>
+													</div>
+													<div class="input-13">
+														<a href="/wp-content/themes/bones-less/library/images/g5.jpg" rel="lightbox" title="Edle Rose"><img src="/wp-content/themes/bones-less/library/images/g6.jpg"></a>
+													</div>
+													<div class="input-13">
+														<a href="/wp-content/themes/bones-less/library/images/g7.jpg" rel="lightbox" title="Baby"><img src="/wp-content/themes/bones-less/library/images/g7.jpg"></a>
+													</div>
+												</div>
+											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>Kartentext</p>
 												</div>
-												<div class="input-70"><span class="wpcf7-form-control-wrap IhreNachriht">
+												<div class="input-70"><span class="wpcf7-form-control-wrap k-te IhreNachriht">
 													<?= $Html->Form->textarea('kartentext', false, ['cols' => '40', 'rows' => '9', 'class' => 'wpcf7-form-control wpcf7-textarea', 'aria-invalid' => 'false' ]) ?>
 													<?= $val->error('kartentext') ?>
 												</span></div>
@@ -351,18 +374,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>Anlass</p>
 												</div>
-												<div class="input-40">
+												<div class="input-70">
 												<?php
 												echo $Html->Form->select('anlass', false, [
-													"" => '...',
+													"" => 'Anlass',
 													"Geburstag" => 'Geburstag',
 													"Überraschung" => 'Überraschung',
 													"Liebeserklärung" => 'Liebeserklärung',
 													"Hochzeit" => 'Hochzeit',
 													"Geburt" => 'Geburt',
-													"Dekoration - Event - Firmengeschenk" => 'Dekoration - Event - Firmengeschenk',
-													"Trauerfloristik - Grabschmuck" => 'Trauerfloristik - Grabschmuck',
-													"Tel. besprechen" => 'Tel. besprechen',
+													"Dekoration/Event/Firmengeschenk" => 'Dekoration/Event/Firmengeschenk',
+													"Trauerfloristik/Grabschmuck" => 'Trauerfloristik/Grabschmuck',
 												], [
 													'selected' => $_POST['anlass'],
 												]);
@@ -374,7 +396,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>Lieferdatum</p>
 												</div>
-												<div class="input-40"> 
+												<div class="input-70">
 													<?= $Html->Form->input('lieferdatum', false, ['placeholder' => 'Tag/Monat/Jahr', 'class' => 'date' ]) ?>
 													<?= $val->error('lieferdatum') ?>
 												</div>
@@ -390,16 +412,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 													"NACHMITTAG" => 'NACHMITTAG',
 												], [
 													'selected' => $_POST['time'],
-													'wrapper' => ['tag' => 'div', 'class' => 'input-40']
+													'wrapper' => ['tag' => 'div', 'class' => 'input-70']
 												]);
 												?>
 												<?= $val->error('time') ?>
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
+													<p>ZUSTELLUNG</p>
+												</div>
+												<?php
+												echo $Html->Form->select('zustellung', false, [
+                                                    "HAUSLIEFERDIENST (ZÜRICH UND UMGEBUNG)" => 'HAUSLIEFERDIENST (ZÜRICH UND UMGEBUNG)',
+                                                    "POSTVERSAND" => 'POSTVERSAND',
+                                                    "ABHOLUNG IM BLUMENHAUS WIEDIKON" => 'ABHOLUNG IM BLUMENHAUS WIEDIKON'
+												], [
+													'selected' => $_POST['zustellung'],
+													'wrapper' => ['tag' => 'div', 'class' => 'input-70']
+												]);
+												?>
+											</div>
+											<div class="input-100 clearfix">
+												<div class="input-30">
 													<p>Anmerkungen</p>
 												</div>
-												<div class="input-70"><span class="wpcf7-form-control-wrap IhreNachriht">
+												<div class="input-70"><span class="wpcf7-form-control-wrap t-ir IhreNachriht huge">
 													<?= $Html->Form->textarea('anmerkungen', false, ['cols' => '40', 'rows' => '9', 'class' => 'wpcf7-form-control wpcf7-textarea', 'aria-invalid' => 'false' ]) ?>
 													<?= $val->error('anmerkungen') ?>
 												</span></div>

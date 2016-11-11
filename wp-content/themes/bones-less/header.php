@@ -94,7 +94,7 @@ require_once 'vendor/autoload.php';
 			<!-- drop Google Analytics Here -->
 
 			<!-- end analytics -->
-
+			<!--[if IE]><link rel="stylesheet" type="text/css" href="ie-style.css"/><![endif]-->
 			<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/skrollr.min.js"></script>
 			<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/jquery-ui.js"></script>
 			<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/timepicker.js"></script>
@@ -146,9 +146,9 @@ require_once 'vendor/autoload.php';
 
 								<div class="social-icons">
 
-									<a href="https://www.facebook.com/blumenhaus.wiedikon/" class="fbp ic"></a>
-									<a href="#">GefÄllt mir </a>
-									<a href="#">TEILEN</a>
+									<a href="https://www.facebook.com/blumenhaus.wiedikon/" target="_blank" class="fbp ic"></a>
+									<a href="https://www.facebook.com/blumenhaus.wiedikon/" target="_blank" href="#">GefÄllt mir </a>
+									<a href="http://www.facebook.com/sharer/sharer.php?u=https://www.facebook.com/blumenhaus.wiedikon/">TEILEN</a>
 
 								</div> <!-- end #inner-header -->
 
