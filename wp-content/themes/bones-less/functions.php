@@ -22,6 +22,9 @@ sidebars, comments, ect.
 require __DIR__ . '/vendor/autoload.php';
 $Html = htmlHelper();
 
+require_once 'library/theme-settings.php';
+add_action( 'admin_enqueue_scripts', 'blu_admin_settings_enqueue' );
+
 /*
 
 0. library/wp-less/wp-less.php
