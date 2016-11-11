@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			'blumenart' => 'required',
 			'blumenfarbe' => 'required',
 			'karte' => 'required',
-			'aus_karte' => 'required',
+			'aus_karte' => 'required|ifeq:karte=Mit Karte',
 			'kartentext' => 'required',
 			'anlass' => 'required',
 			'lieferdatum' => 'required',
@@ -81,9 +81,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Anlass', 'anlass', ['!=' => 0]);
 			$simpleMail->line('Lieferdatum', 'lieferdatum');
 			$simpleMail->line('Zeit', 'time');
+			$simpleMail->line('Zustellung', 'zustellung');
 			$simpleMail->line('Anmerkungen', 'anmerkungen');
 
-			send_mail('Bestellen', $simpleMail->render(), [$_POST['E-mail'], $_POST['liefeE-mail']]);
+			send_mail('Bestellen', $simpleMail->render(), [$_POST['E-mail']]);
 
 			header("Location: " . $_SERVER['HTTP_HOST'] . "/danke-fur-ihre-bestellung");
 			exit;
@@ -305,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30 radios">
-													<input type="radio" name="karte" value="Onhe Karte" id="karte"
+													<input type="radio" name="karte" value="Ohne Karte" id="karte"
 														<?= ($_POST['karte'] == 'Ohne Karte') ? 'checked' : '' ?>
 													> <label for="karte">Ohne Karte</label><div class="check"></div>
 												</div>

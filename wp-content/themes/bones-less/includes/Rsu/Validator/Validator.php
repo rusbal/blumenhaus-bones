@@ -3,24 +3,65 @@
 namespace Rsu\Validator;
 
 
-use Underscore\Types\Strings;
+use Rsu\Validator\Filters\CancelValidatorFilterIfEq;
+use Rsu\Validator\Filters\CancelValidatorFilterIfNotSet;
+use Rsu\Validator\Filters\CancelValidatorFilterIfSet;
 
 class Validator {
-	protected $rules;
-	protected $post;
-	protected $errors = [];
 
-	public function __construct($rules = null, $post = null) {
+    /**
+     * Array of rules that is use for validation.
+     *  [
+     *      'email' => 'required|ifnotset:sameAsBilling',
+     *      'color' => 'required|ifeq:card=Yes'
+     *      'name' => 'required',
+     *  ]
+     * @var [string]
+     */
+    protected $rules;
+
+    /**
+     * Array of values ($_POST)
+     *
+     * @var array
+     */
+    protected $post;
+
+    /**
+     * Array of errors stored for each field.
+     *
+     * @var [string]
+     */
+    protected $errors = [];
+
+    /**
+     * Array of CancelValidationFilters.
+     * These filters cancel the validation.
+     *
+     * @var [class]
+     */
+    protected $cancelValidators = [
+        CancelValidatorFilterIfEq::class,
+        CancelValidatorFilterIfSet::class,
+        CancelValidatorFilterIfNotSet::class
+    ];
+
+    /**
+     * Validator constructor.
+     * @param null $rules
+     * @param null $post
+     */
+    public function __construct($rules = null, $post = null) {
 		$this->rules = $rules;
 		$this->post = $post;
 	}
 
-	public function success()
-	{
-		return $this->run();
-	}
-
-	public function run()
+    /**
+     * Run all validation rules.
+     *
+     * @return bool
+     */
+    public function run()
 	{
 		$isValid = true;
 
@@ -35,53 +76,55 @@ class Validator {
 		return $isValid;
 	}
 
-	public function error($name)
+    /**
+     * Alias to run().
+     * @return bool
+     */
+    public function success()
+    {
+        return $this->run();
+    }
+
+    /**
+     * Returns error message of field of null.
+     *
+     * @param $name
+     * @return null|string
+     */
+    public function error($name)
 	{
-		if (! $this->rules) {
-			return null;
-		}
+	    if (! isset($this->errors[$name])) {
+            if (! isset($this->rules[$name])) {
+                return null;
+            }
 
-		$this->run();
+            $rule = $this->rules[$name];
 
-		if (! isset($this->errors[$name])) {
-			return null;
-		}
+            if ($this->evaluateField($name, $rule)) {
+                return null;
+            }
+        }
 
 		return '<div class="error">' . str_replace('_', ' ', $this->errors[$name]) . '</div>';
 	}
 
-	private function evaluateField($name, $rule)
+    /**
+     * Evaluates the rules on a field.
+     *
+     * @param $name
+     * @param $rule
+     * @return bool
+     */
+    private function evaluateField($name, $rule)
 	{
 		$value = isset($this->post[$name]) ? $this->post[$name] : null;
 		$rules = explode('|', $rule);
 
-		/**
-		 * Check if not set
-		 */
-		$ifNotSetRule = $this->getIfNotSet($rules);
-
-		if ($ifNotSetRule) {
-			if ($this->ifsetContinue($ifNotSetRule)) {
-				/**
-				 * We only need to check if this is not set.  It's set so no more test.
-				 */
-				return true;
-			}
-		}
-
-		/**
-		 * Check if set
-		 */
-		$ifSetRule = $this->getIfSet($rules);
-
-		if ($ifSetRule) {
-			if (! $this->ifsetContinue($ifSetRule)) {
-				/**
-				 * Ifset is not satisfied, thus, no need to validate.
-				 */
-				return true;
-			}
-		}
+        foreach ($this->cancelValidators as $cancelValidator) {
+            if ((new $cancelValidator($rules, $this->post))->check()) {
+                return true; // Cancel validation.
+            }
+        }
 
 		foreach ($rules as $rule) {
 			if ($this->evalRule($name, $value, $rule)) {
@@ -94,41 +137,17 @@ class Validator {
 		return true;
 	}
 
-	private function getIfSet($rules)
+    /**
+     * Evaluates rule.
+     *
+     * @param $name
+     * @param $value
+     * @param $rule
+     * @return bool
+     */
+    private function evalRule($name, $value, $rule)
 	{
-		foreach ($rules as $rule) {
-			if (Strings::startsWith($rule, 'ifset:')) {
-				return $rule;
-			}
-		}
-
-		return null;
-	}
-
-	private function getIfNotSet($rules)
-	{
-		foreach ($rules as $rule) {
-			if (Strings::startsWith($rule, 'ifnotset:')) {
-				return $rule;
-			}
-		}
-
-		return null;
-	}
-
-	private function splitRule($rule)
-	{
-		$arr = explode(':', $rule);
-
-		if (count($arr) == 1) {
-			return [$rule, null];
-		}
-		return $arr;
-	}
-
-	private function evalRule($name, $value, $rule)
-	{
-		list($ruleName, $ruleParam) = $this->splitRule($rule);
+		list($ruleName) = $this->splitRule($rule);
 
 		if ($ruleName == 'required') {
 			$satisfied = $this->isSupplied($value);
@@ -142,21 +161,29 @@ class Validator {
 		return true;
 	}
 
-	private function ifsetContinue($rule)
-	{
-		list($ruleName, $requiredKeyToContinueTesting) = $this->splitRule($rule);
+    /**
+     * Splits a rule ensuring the presence of second part.
+     *
+     * @param $rule
+     * @return array
+     */
+    private function splitRule($rule)
+    {
+        $arr = explode(':', $rule);
 
-		/**
-		 * Check if required key (contained in $requiredValueToContinueTesting) is set.
-		 */
-		if (! isset($this->post[$requiredKeyToContinueTesting])) {
-			return false;
-		}
+        if (count($arr) == 1) {
+            return [$rule, null];
+        }
+        return $arr;
+    }
 
-		return $this->isSupplied($this->post[$requiredKeyToContinueTesting]);
-	}
-
-	private function isSupplied($value)
+    /**
+     * Checks if value is not null and not empty string.
+     *
+     * @param $value
+     * @return bool
+     */
+    private function isSupplied($value)
 	{
 		return ! is_null($value) && $value != '';
 	}
