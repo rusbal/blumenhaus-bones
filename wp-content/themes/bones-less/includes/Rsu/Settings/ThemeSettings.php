@@ -21,6 +21,11 @@ class ThemeSettings
     private $settingsID;
     private $settingFields;
 
+    public static function orderEmailRecipients() {
+        $emailCsv = get_option('blu_settings_order_email_recipients');
+        return array_map('trim', explode(',', $emailCsv));
+    }
+
     function __construct($args){
         /*
         * @ Needs an array of args to instantiate.

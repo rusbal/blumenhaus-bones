@@ -35,7 +35,7 @@ $theme_settings = [
     'settingFields' => [
         'order' => [
             [
-                'name' => 'blu_settings_send_order_to_email',
+                'name' => 'blu_settings_order_email_recipients',
                 'placeholder' => 'Comma-separated for multiple emails'
             ],
         ],
