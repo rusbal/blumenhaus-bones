@@ -4,7 +4,7 @@ Donate link: http://huge-it.com/slider/
 Tags: slider, slideshow, wordpress slider, image slider, Photo Slider, slider plugin, responsive slider, easy slider, post slider, video slider, youtube slider, wordpress slideshow,
 Requires at least: 3.0.1
 Tested up to: 4.6.1
-Stable tag: 3.1.95
+Stable tag: 3.1.96
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,6 +413,10 @@ After installation of pro version, in General Options all your changes will be s
 If you think, that you found a bug in our [WordPress Slider](http://huge-it.com/slider/) plugin or have any question contact us at [info@huge-it.com](mailto:info@huge-it.com)
 
 == Changelog ==
+
+= 3.1.96 =
+* 1) Fixed issues with nonce tokens in the plugin for all _POST, _GET requests
+* 2) Fixed issue with cross site scripting (XSS)
 
 = 3.1.95 =
 * 1) Added duplicate button, so that users can duplicate sliders.

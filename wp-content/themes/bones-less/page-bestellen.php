@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->header('Bestellen');
 
 			$simpleMail->sectionTitle('Rechnungsadresse');
-			$simpleMail->line('Privatperson or firma', 'private');
+			$simpleMail->line('Privatperson oder Firma', 'private');
 			$simpleMail->line('Name', 'Vorname');
 			$simpleMail->line('Strasse', 'Strasse');
 			$simpleMail->line('Plz, Ort', 'PlzOrt');
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->addLineBreak(2);
 
 			$simpleMail->sectionTitle('Lieferadresse');
-			$simpleMail->line('Same As Billing', [
+			$simpleMail->line('wie Rechnungsadresse', [
 				'sameAsBilling', 'Ja', 'Nein'
 			]);
 
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->addLineBreak(2);
 
 			$simpleMail->sectionTitle('Ihre Bestellung');
-			$simpleMail->line('Preisrahamen', 'preisrahamen', ['!=' => 0]);
+			$simpleMail->line('Preisrahmen', 'preisrahamen', ['!=' => 0]);
 			$simpleMail->line('Blumenart', 'blumenart', ['!=' => 0]);
 			$simpleMail->line('Blumenfarbe', 'blumenfarbe', ['!=' => 0]);
 			$simpleMail->line('Karte', 'karte');
@@ -379,7 +379,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<?php
 												echo $Html->Form->select('anlass', false, [
 													"" => 'Anlass',
-													"Geburstag" => 'Geburstag',
+													"Geburtstag" => 'Geburtstag',
 													"Überraschung" => 'Überraschung',
 													"Liebeserklärung" => 'Liebeserklärung',
 													"Hochzeit" => 'Hochzeit',

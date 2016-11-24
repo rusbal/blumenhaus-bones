@@ -112,7 +112,6 @@ a.delete-link {
     margin: 3px 4px 0 0;
     background: #f2f2f2;
     outline: none;
-    width: auto;
     box-shadow: none;
     border: 0;
     width: 90px;
@@ -124,7 +123,6 @@ a.delete-link {
     display: block;
     text-decoration: none;
     padding: 5px 10px 5px 10px;
-    background: #ebebeb;
     color: #777;
     background: #fff;
     outline: none;
@@ -280,7 +278,7 @@ a.delete-link {
 #images-list .image-container {
     position: relative;
     width: 24%;
-    padding: 0px 0.5% 0px 0.5%;
+    padding: 0 0.5% 0 0.5%;
     float: left;
     max-width: 220px;
     height: 150px;

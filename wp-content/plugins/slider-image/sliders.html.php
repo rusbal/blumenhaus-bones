@@ -17,46 +17,30 @@ if(!function_exists('current_user_can')){
  *
  * @return mixed
  */
-function hugeit_slider_img_get_image_id($image_url)
-{
+function hugeit_slider_img_get_image_id( $image_url ) {
 	global $wpdb;
-	$attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM " . $wpdb->prefix . "posts WHERE guid='%s';", $image_url));
-	if($attachment)
+	$attachment = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM " . $wpdb->prefix . "posts WHERE guid='%s';", $image_url ) );
+	if ( $attachment ) {
 		return $attachment[0];
+	}
 }
 
 /**
  * Get image url by image src, width, height
  *
  * @param $image_src
- * @param $image_width
- * @param $image_height
- * @param bool $is_attachment
+ * @param $image_sizes
+ * @param $is_thumbnail
  *
  * @return false|string
  */
-function hugeit_slider_img_get_image_by_sizes_and_src($image_src, $image_sizes, $is_thumbnail)
-{
+function hugeit_slider_img_get_image_by_sizes_and_src($image_src, $image_sizes, $is_thumbnail) {
 	$is_attachment = hugeit_slider_img_get_image_id($image_src);
-	$img_sizes = getimagesize($image_src);
-	$img_height = $img_sizes[1];
 
-	if (is_string($image_sizes)) {
-		$image_sizes = $image_sizes;
-		$img_width = intval($image_sizes);
-	}
-	if (is_object($image_sizes)) {
-		// Closures are currently implemented as objects
-		$image_sizes = array($image_sizes, '');
-	}
 	if (!$is_attachment) {
 		$image_url = $image_src;
 	} else {
 		$attachment_id = hugeit_slider_img_get_image_id($image_src);
-		$natural_img_width = explode(',', wp_get_attachment_image_sizes($attachment_id, 'full'));
-		$natural_img_width = $natural_img_width[1];
-		$natural_img_width = str_replace(' ', '', $natural_img_width);
-		$natural_img_width = intval(str_replace('px', '', $natural_img_width));
 		if ($is_thumbnail) {
 			$image_url = wp_get_attachment_image_url($attachment_id, 'thumbnail');
 		}
@@ -65,7 +49,7 @@ function hugeit_slider_img_get_image_by_sizes_and_src($image_src, $image_sizes, 
 	return $image_url;
 }
 
-function hugeit_slider_html_show_sliders( $rows,  $pageNav,$sort,$cat_row) {
+function hugeit_slider_html_show_sliders( $rows, $pageNav, $sort, $cat_row ) {
 	global $wpdb;
 	?>
     <script language="javascript">
