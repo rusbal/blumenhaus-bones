@@ -74,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->sectionTitle('Ihre Bestellung');
 			$simpleMail->line('Preisrahmen', 'preisrahamen', ['!=' => 0]);
 			$simpleMail->line('Blumenart', 'blumenart', ['!=' => 0]);
+            $simpleMail->line('Rote Rosen Angebot', 'rote_rosen', ['!=' => '']);
 			$simpleMail->line('Blumenfarbe', 'blumenfarbe', ['!=' => 0]);
 			$simpleMail->line('Karte', 'karte');
 			$simpleMail->line('Auswählen', 'aus_karte', ['!=' => 0]);
@@ -280,6 +281,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<?= $val->error('blumenart') ?>
 												</div>
 											</div>
+                                            <div class="input-100 clearfix">
+                                                <div class="input-30">
+                                                    <p>Rote Rosen</p>
+                                                </div>
+                                                <div class="input-40">
+                                                    <?php
+                                                    echo $Html->Form->select('rote_rosen', false, [
+                                                        "" => 'Rote Rosen Angebot',
+                                                        "1x langstielige rote Rose à 6.50" => '1x langstielige rote Rose à 6.50',
+                                                        "10x langstielige rote Rose à 6.20" => '10x langstielige rote Rose à 6.20',
+                                                        "30x langstielige rote Rose à 5.80" => '30x langstielige rote Rose à 5.80',
+                                                    ], [
+                                                        'selected' => $_POST['rote_rosen'],
+                                                    ]);
+                                                    ?>
+                                                    <?= $val->error('rote_rosen') ?>
+                                                </div>
+                                            </div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>Blumenfarbe</p>
