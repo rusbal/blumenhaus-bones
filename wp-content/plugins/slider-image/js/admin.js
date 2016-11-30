@@ -1,8 +1,14 @@
 jQuery(document).ready(function () {
+	jQuery('.close-black-friday').on('click',function () {
+		jQuery(".backend-banner").css("display","none");
+		hgSliderSetCookie( 'hgSliderBlackFridayShow', 'no', {expires:345600} );
+	});
+	jQuery('.banner-block').on('click',function () {
+		window.open('http://huge-it.com','_blank');
+	});
 	jQuery('a.delete-link').on('click',function(e){
 		if(!confirm('Are you sure you want to delete this item?'))
 			e.preventDefault();
-
 	});
 	var setTimeoutConst;
 	jQuery('ul#images-list li > .image-container img').on('mouseenter',function () {

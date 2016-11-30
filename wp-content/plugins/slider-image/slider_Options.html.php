@@ -131,7 +131,7 @@ function hugeit_slider_html_show_styles( $param_values, $op_type ) {
 					        <form action="admin.php?page=Options_slider_styles" method="post" id="adminForm"
 					              name="adminForm">
 
-						        <div class="options-block" id="options-block-slider">
+						        <div class="options-block" id="options-block-slider" style="clear: both">
 							        <h3>Slider Styles</h3>
 							        <div class="has-background">
 								        <label for="slider_crop_image">Image Behaviour
