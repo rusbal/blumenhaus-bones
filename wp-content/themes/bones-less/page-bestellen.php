@@ -239,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>PREISRAHMEN</p>
 												</div>
-												<div class="input-40">
+												<div class="input-70">
 												<?php
 												echo $Html->Form->select('preisrahamen', false, [
 													"" => 'PREISRAHMEN',
@@ -265,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>Blumenart</p>
 												</div>
-												<div class="input-40">
+												<div class="input-70">
 												<?php
 												echo $Html->Form->select('blumenart', false, [
 													"" => 'BLUMENSCHMUCK',
@@ -285,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 <div class="input-30">
                                                     <p>Rote Rosen</p>
                                                 </div>
-                                                <div class="input-40">
+                                                <div class="input-70">
                                                     <?php
                                                     echo $Html->Form->select('rote_rosen', false, [
                                                         "" => 'Rote Rosen Angebot',
@@ -303,7 +303,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>Blumenfarbe</p>
 												</div>
-												<div class="input-40">
+												<div class="input-70">
 												<?php
 												echo $Html->Form->select('blumenfarbe', false, [
 													"" => 'Blumenfarbe',
