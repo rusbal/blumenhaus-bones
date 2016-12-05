@@ -14,8 +14,6 @@ function send_mail($subject, $message, $recipients = []) {
 	/**
 	 * Default recipients
 	 */
-//	$recipients[] = 'matijevicstefan@gmail.com';
-//	$recipients[] = 'ingo.grunig@gmail.com';
 	$recipients[] = 'raymond@philippinedev.com';
 
     $recipients = array_unique($recipients);
@@ -26,7 +24,7 @@ function send_mail($subject, $message, $recipients = []) {
 
 	foreach ($recipients as $recipient) {
 		if(filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-			mail( $recipient, $subject, $message, $headers );
+			wp_mail( $recipient, $subject, $message, $headers );
 		}
 	}
 }
