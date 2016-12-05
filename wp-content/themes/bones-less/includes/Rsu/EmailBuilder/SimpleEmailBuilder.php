@@ -2,6 +2,8 @@
 
 namespace Rsu\EmailBuilder;
 
+use Rsu\ContactForm\DbWriter\LoggerInterface;
+
 /**
  * Class SimpleEmailBuilder
  * @package Rsu\EmailBuilder
@@ -10,15 +12,18 @@ class SimpleEmailBuilder
 {
 	protected $head = '';
 	protected $body = [];
+    protected $data = [];
 	protected $post;
+	protected $logger;
 
 	/**
 	 * SimpleEmailBuilder constructor.
 	 *
 	 * @param $post
 	 */
-	public function __construct($post) {
+	public function __construct($post, LoggerInterface $logger = null) {
 		$this->post = $post; // $this->post or any array
+        $this->logger = $logger;
 	}
 
 	/**
@@ -57,6 +62,7 @@ class SimpleEmailBuilder
 
 		if ($message) {
 			$this->body[] = $message;
+			$this->data[] = [ $caption => $this->getValue($data) ];
 		}
 		return $this;
 	}
@@ -81,6 +87,9 @@ class SimpleEmailBuilder
 		if (count($this->body) == 0) {
 			throw new \Exception("No email content to render");
 		}
+		if ($this->logger) {
+		    $this->logger->log($this->data);
+        }
 		return '<html>'
 			. '<head>' . $this->head . '</head>'
 		    . '<body>' . implode("\n", $this->body) . '</body>'
@@ -100,15 +109,7 @@ class SimpleEmailBuilder
 	 */
 	private function lineBuilder($caption, $data, $condition = [])
 	{
-		$value = null;
-
-		if (is_array($data)) {
-			list($name, $trueValue, $falseValue) = $data;
-			$value = isset($this->post[$name]) ? $trueValue : $falseValue;
-
-		} elseif ( isset( $this->post[$data] ) ) {
-			$value = $this->post[$data];
-		}
+		$value = $this->getValue($data);
 
 		if ($this->failedCheck($value, $condition)) {
 			return null;
@@ -120,6 +121,18 @@ class SimpleEmailBuilder
 
 		return null;
 	}
+
+	private function getValue($data)
+    {
+        if (is_array($data)) {
+            list($name, $trueValue, $falseValue) = $data;
+            return isset($this->post[$name]) ? $trueValue : $falseValue;
+        }
+
+        if ( isset( $this->post[$data] ) ) {
+            return $this->post[$data];
+        }
+    }
 
 	/**
 	 * Negates check function.

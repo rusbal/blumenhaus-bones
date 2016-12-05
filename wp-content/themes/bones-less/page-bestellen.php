@@ -6,6 +6,7 @@ Template Name: Bestellen
 
 */
 
+use Rsu\ContactForm\DbWriter\DbWriterLogger;
 use Rsu\EmailBuilder\SimpleEmailBuilder;
 use Rsu\Validator\Validator;
 
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$val = new Validator($validationRule, $_POST);
 
 		if ($val->success()) {
-			$simpleMail = new SimpleEmailBuilder($_POST);
+			$simpleMail = new SimpleEmailBuilder($_POST, (new DbWriterLogger));
 			$simpleMail->header('Bestellen');
 
 			$simpleMail->sectionTitle('Rechnungsadresse');
