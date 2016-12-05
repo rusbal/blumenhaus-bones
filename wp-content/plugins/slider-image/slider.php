@@ -4,7 +4,7 @@
 Plugin Name: Slider
 Plugin URI: http://huge-it.com/slider
 Description: Slider Huge-IT is an awesome WordPress Slider Plugin with many nice features. Just need to install and build slider in a few minutes.
-Version: 3.1.96
+Version: 3.1.98
 Author: Huge-IT
 Author URI: http://huge-it.com/
 License: GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -144,23 +144,62 @@ function huge_it_slider_options_panel()
 }
 function huge_it_slider_Licensing() {
 	?>
-	<div style="width:95%">
-		<p>
-			This plugin is the LITE version of the Slider. If you want to customize to the styles and colors of your
-			website,than you need to buy Full License. Purchasing Full License will add possibility to customize the
-			general options of the Slider.
-		</p>
-		<br/><br/>
-		<a href="http://huge-it.com/slider/" class="button-primary" target="_blank">Purchase a License</a>
-		<br/><br/><br/>
-		<p>After the purchasing the commercial version follow this steps:</p>
-		<ol>
-			<li>Deactivate Huge IT slider Plugin</li>
-			<li>Delete Huge IT slider Plugin</li>
-			<li>Install the downloaded commercial version of the plugin</li>
-		</ol>
-	</div>
+    <div class="slider-licens">
+        <div class="slider-block">
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon post-slider"></span>
+                    <span class="text">Post Slider</span>
+                </a>
+            </div>
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon youtube"></span>
+                    <span class="text">YouTube Video Support</span>
+                </a>
+            </div>
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon vimeo"></span>
+                    <span class="text">Vimeo Video Support</span>
+                </a>
+            </div>
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon advanced"></span>
+                    <span class="text">Advanced Customization</span>
+                </a>
+            </div>
+
+
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon full-option"></span>
+                    <span class="text">Full Option Access</span>
+                </a>
+            </div>
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon description"></span>
+                    <span class="text">Title & Description Styles</span>
+                </a>
+            </div>
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon slider-arrow"></span>
+                    <span class="text">Arrow Styles</span>
+                </a>
+            </div>
+            <div class="licens">
+                <a href="http://huge-it.com/slider/">
+                    <span class="icon design"></span>
+                    <span class="text">Design Customization</span>
+                </a>
+            </div>
+        </div>
+    </div>
 <?php
+    wp_enqueue_style('hugeit-slider-licensing-css',plugins_url('style/licensing.css',__FILE__));
 }
 
 function huge_it_slider_featured_plugins() {
@@ -309,7 +348,7 @@ function huge_it_slider_featured_plugins() {
 	<div class="left-block">
 		<div class="main-image-block">
             <a href="http://huge-it.com/wordpress-gallery/" target="_blank">
-			     <img src="<?php echo plugins_url( 'images/Gallery.png' , __FILE__ ); ?>">
+			     <img src="<?php echo plugins_url( 'images/gallery.png' , __FILE__ ); ?>">
             </a>
 		</div>
 	</div>
@@ -338,6 +377,23 @@ function huge_it_slider_featured_plugins() {
 		</div>			  				
 		<div class="button-block">
 			<a href="http://huge-it.com/portfolio-gallery/" target="_blank">View Plugin</a>
+		</div>
+	</div>
+</div>
+<div class="element hugeitmicro-item">
+	<div class="left-block">
+		<div class="main-image-block">
+			<a href="http://huge-it.com/wordpress-pricing-table-builder/" target="_blank"><img
+					src="<?php echo plugins_url( 'images/pricing-table.png' , __FILE__ ); ?>"></a>
+		</div>
+	</div>
+	<div class="right-block">
+		<div class="title-block"><a href="http://huge-it.com/wordpress-pricing-table-builder/" target="_blank"><h3><?php echo __("Pricing Table");?></h3></a></div>
+		<div class="description-block">
+			<p><?php echo __("Make awesome sales with beautiful and responsive Pricing Table plugin for WordPress. This plugin includes more than 120 default themes to choose from, has variety of options and is free to download.","pportfolio-gallery");?>.</p>
+		</div>
+		<div class="button-block">
+			<a href="http://huge-it.com/wordpress-pricing-table-builder/" target="_blank">View Plugin</a>
 		</div>
 	</div>
 </div>
@@ -1007,12 +1063,12 @@ function hugeit_slider_add_style_to_header( $id ) {
 		<?php
 		if ($sliderposition!="left") {
 			if($sliderposition=="right") {
-				$position='float:right;';
+				$position='float:right;margin: 20px';
 			} else {
 				$position='float:none; margin:0px auto;';
 			}
 		} else {
-			$position='float:left;';
+			$position='float:left;margin: 20px';
 		}
 		echo $position; ?>
 			border-style: solid;
