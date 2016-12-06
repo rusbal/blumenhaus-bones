@@ -8,6 +8,7 @@ Template Name: Bestellen
 
 use Rsu\ContactForm\DbWriter\DbWriterLogger;
 use Rsu\EmailBuilder\SimpleEmailBuilder;
+use Rsu\Slugify\Slugify;
 use Rsu\Validator\Validator;
 
 $val = new Validator();
@@ -46,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$val = new Validator($validationRule, $_POST);
 
 		if ($val->success()) {
-			$simpleMail = new SimpleEmailBuilder($_POST, (new DbWriterLogger));
+		    $logger = new DbWriterLogger('Order form', $wpdb, (new Slugify()));
+
+			$simpleMail = new SimpleEmailBuilder($_POST, $logger);
 			$simpleMail->header('Bestellen');
 
 			$simpleMail->sectionTitle('Rechnungsadresse');

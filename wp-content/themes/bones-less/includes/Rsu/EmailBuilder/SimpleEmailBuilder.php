@@ -16,12 +16,12 @@ class SimpleEmailBuilder
 	protected $post;
 	protected $logger;
 
-	/**
-	 * SimpleEmailBuilder constructor.
-	 *
-	 * @param $post
-	 */
-	public function __construct($post, LoggerInterface $logger = null) {
+    /**
+     * SimpleEmailBuilder constructor.
+     * @param $post
+     * @param LoggerInterface|null $logger
+     */
+    public function __construct($post, LoggerInterface $logger = null) {
 		$this->post = $post; // $this->post or any array
         $this->logger = $logger;
 	}

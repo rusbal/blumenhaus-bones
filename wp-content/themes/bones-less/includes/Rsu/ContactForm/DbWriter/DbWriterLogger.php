@@ -2,6 +2,8 @@
 
 namespace Rsu\ContactForm\DbWriter;
 
+use Rsu\Slugify\Slugify;
+
 
 /**
  * Class DbWriter
@@ -9,73 +11,96 @@ namespace Rsu\ContactForm\DbWriter;
  */
 class DbWriterLogger implements LoggerInterface
 {
-    const FORM_NAME = 'Order form';
-
     const TABLE_SUBMIT_TIME = 'cf7dbplugin_st';
     const TABLE_SUBMITS = 'cf7dbplugin_submits';
+
+    protected $db = null;
+    protected $slugifier = null;
+    protected $formName;
+    protected $time;
+
+    /**
+     * DbWriterLogger constructor.
+     * @param string  $formName
+     * @param object  $db        e.g. The wpdb Class
+     * @param Slugify $slugifier
+     */
+    public function __construct($formName, $db, Slugify $slugifier)
+    {
+        $this->formName = $formName;
+        $this->db = $db;
+        $this->slugifier = $slugifier;
+        $this->time = microtime(true);
+    }
 
     /**
      * @param array $data
      * @return boolean
      */
-    public static function log($data)
+    public function log($data)
     {
-        $time = microtime(true);
-        self::logToSubmitTimeTable($time);
-        self::logToSubmitsTable($data, $time);
+        $this->logToSubmitTimeTable();
+        $this->logToSubmitsTable($data);
         return true;
     }
 
-    private static function logToSubmitTimeTable($time)
+    private function logToSubmitTimeTable()
     {
-        global $wpdb;
-
-        $wpdb->insert( self::submitTimeTable(), [
-            'submit_time' => $time
+        $this->db->insert( $this->submitTimeTable(), [
+            'submit_time' => $this->time
         ]);
     }
 
-    private static function logToSubmitsTable($data, $time)
+    private function logToSubmitsTable($data)
     {
-        global $wpdb;
-
-        $submitsTable = self::submitsTable();
-
-        $wpdb->insert( $submitsTable, [
-            'submit_time' => $time,
-            'form_name' => self::FORM_NAME,
+        $this->logSubmittedData([
             'field_name' => 'Mail',
             'field_value' => '',
             'field_order' => 0,
-            'file' => null
         ]);
 
         foreach ($data as $idx => $arrValue) {
 
-            $caption = key($arrValue);
-            $value = $arrValue[$caption];
+            list($caption, $value) = $this->getCaptionValuePair($arrValue);
 
-            $wpdb->insert( $submitsTable, [
-                'submit_time' => $time,
-                'form_name' => self::FORM_NAME,
+            $this->logSubmittedData([
                 'field_name' => $caption,
                 'field_value' => $value,
                 'field_order' => ($idx + 1),
-                'file' => null
             ]);
         }
 
-        $wpdb->insert( $submitsTable, [
-            'submit_time' => $time,
-            'form_name' => self::FORM_NAME,
+        $this->logSubmittedData([
             'field_name' => 'Submitted From',
-            'field_value' => self::userIpAddress(),
+            'field_value' => $this->userIpAddress(),
             'field_order' => 10000,
-            'file' => null
         ]);
     }
 
-    private static function userIpAddress() {
+    private function getCaptionValuePair($arrValue)
+    {
+        $caption = key($arrValue);
+
+        return [
+            $this->slugifier->noConflict($caption),
+            $arrValue[$caption]
+        ];
+    }
+
+    private function logSubmittedData($data)
+    {
+        $commonData = [
+            'submit_time' => $this->time,
+            'form_name' => $this->formName,
+            'file' => null
+        ];
+
+        $data = array_merge($data, $commonData);
+
+        $this->db->insert( $this->submitsTable(), $data );
+    }
+
+    private function userIpAddress() {
         if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
             //check ip from share internet
             $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -88,16 +113,13 @@ class DbWriterLogger implements LoggerInterface
         return $ip;
     }
 
-    private static function submitTimeTable()
+    private function submitTimeTable()
     {
-        global $wpdb;
-        return $wpdb->base_prefix . self::TABLE_SUBMIT_TIME;
+        return $this->db->base_prefix . self::TABLE_SUBMIT_TIME;
     }
 
-    private static function submitsTable()
+    private function submitsTable()
     {
-        global $wpdb;
-        $tableName = 'cf7dbplugin_submits';
-        return $wpdb->base_prefix . self::TABLE_SUBMITS;
+        return $this->db->base_prefix . self::TABLE_SUBMITS;
     }
 }
