@@ -11,8 +11,7 @@
             "Rsu\\": "includes/Rsu"
         },
         "files": [
-            "includes/helpers/html_helper.php",
-            "includes/helpers/mail_helper.php"
+            "includes/helpers/html_helper.php"
         ]
     }
 }

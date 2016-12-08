@@ -8,6 +8,7 @@ Template Name: Bestellen
 
 use Rsu\ContactForm\DbWriter\DbWriterLogger;
 use Rsu\EmailBuilder\SimpleEmailBuilder;
+use Rsu\Mail\MailHelper;
 use Rsu\Slugify\Slugify;
 use Rsu\Validator\Validator;
 
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Zustellung', 'zustellung');
 			$simpleMail->line('Anmerkungen', 'anmerkungen');
 
-			send_mail('Bestellen', $simpleMail->render(), [$_POST['E-mail']]);
+			MailHelper::customerOrder('Bestellen', $simpleMail->render(), $_POST['E-mail'], $_POST['Vorname']);
 
 			header("Location: " . $_SERVER['HTTP_HOST'] . "/danke-fur-ihre-bestellung");
 			exit;

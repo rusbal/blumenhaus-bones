@@ -23,7 +23,9 @@ class ThemeSettings
 
     public static function orderEmailRecipients() {
         $emailCsv = get_option('blu_settings_order_email_recipients');
-        return array_map('trim', explode(',', $emailCsv));
+        return array_unique(
+            array_map('trim', explode(',', $emailCsv))
+        );
     }
 
     function __construct($args){
