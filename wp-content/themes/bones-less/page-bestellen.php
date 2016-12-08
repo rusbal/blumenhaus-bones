@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			'blumenfarbe' => 'required',
 			'karte' => 'required',
 			'aus_karte' => 'required|ifeq:karte=Mit Karte',
-			'kartentext' => 'required',
+			'kartentext' => 'required|ifeq:karte=Mit Karte',
 			'anlass' => 'required',
 			'lieferdatum' => 'required',
 			'time' => 'required',
