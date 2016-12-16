@@ -56,13 +56,33 @@ class SimpleEmailBuilder
 	 *
 	 * @return $this
 	 */
-	public function line($caption, $data, $condition = [])
+	public function line($caption, $data, $condition = [], $dataOptions = [])
 	{
 		$message = $this->lineBuilder($caption, $data, $condition);
 
 		if ($message) {
-			$this->body[] = $message;
-			$this->data[] = [ $caption => $this->getValue($data) ];
+            $value = $this->getValue($data);
+
+            /**
+             * For body (email)
+             */
+            if (isset($dataOptions['valueWhenNotNumeric']) && !is_numeric($value)) {
+                $message .= '<i>' . $dataOptions['valueWhenNotNumeric'] . '</i>';
+            }
+            $this->body[] = $message;
+
+            /**
+             * For data (DB log)
+             */
+            if (isset($dataOptions['captionPrefix'])) {
+                $caption = $dataOptions['captionPrefix'] . ' ' . $caption;
+            }
+
+            if (isset($dataOptions['valuePrefix'])) {
+                $value = $dataOptions['valuePrefix'] . ' ' . $value;
+            }
+
+            $this->data[] = [ $caption => $value ];
 		}
 		return $this;
 	}

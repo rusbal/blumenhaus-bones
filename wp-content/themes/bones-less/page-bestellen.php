@@ -9,6 +9,7 @@ Template Name: Bestellen
 use Rsu\ContactForm\DbWriter\DbWriterLogger;
 use Rsu\EmailBuilder\SimpleEmailBuilder;
 use Rsu\Mail\MailHelper;
+use Rsu\Settings\Option;
 use Rsu\Slugify\Slugify;
 use Rsu\Validator\Validator;
 
@@ -94,11 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Anmerkungen', 'anmerkungen');
 
             $simpleMail->addLineBreak(2);
-            $simpleMail->sectionTitle('Cart: Berechnung');
-            $simpleMail->line('Cart: Blumenwert', 'flower-cost');
-            $simpleMail->line('Cart: Karte', 'karte-cost');
-            $simpleMail->line('Cart: Lieferkosten', 'delivery-cost');
-            $simpleMail->line('Cart: Total', 'cart-total');
+            $simpleMail->line('Blumenwert', 'flower-cost', [], [ 'valuePrefix' => 'Chf.' ]);
+            $simpleMail->line('Kartenkosten', 'karte-cost', [], [ 'valuePrefix' => 'Chf.' ]);
+            $simpleMail->line('Lieferkosten', 'delivery-cost', [], [
+                'valuePrefix' => 'Chf.',
+                'valueWhenNotNumeric' => Option::get('delivery_cost_on_request'),
+            ]);
+            $simpleMail->line('Total', 'cart-total', [], [ 'valuePrefix' => 'Chf.' ]);
 
 			MailHelper::customerOrder('Bestellen', $simpleMail->render(), $_POST['E-mail'], $_POST['Vorname']);
 

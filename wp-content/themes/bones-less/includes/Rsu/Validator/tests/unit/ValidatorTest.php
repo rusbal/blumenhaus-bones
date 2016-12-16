@@ -32,7 +32,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
             [ 'name' => 'required' ],
             [ 'name' => '' ]
         );
-        $expected = 'Name is required.';
+        $expected = 'Name ' . Validator::LANG_IS_REQUIRED;
         $this->assertContains($expected, $this->obj->error('name'));
     }
 
@@ -63,7 +63,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
 		$this->obj = new Validator(
 			[ 'name' => 'required|ifnotset:sameAsBilling' ], []
 		);
-		$expect = 'Name is required.';
+		$expect = 'Name ' . Validator::LANG_IS_REQUIRED;
 		$this->assertContains($expect, $this->obj->error('name'));
 	}
 
@@ -73,7 +73,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
             [ 'name' => 'required|ifset:sameAsBilling' ],
             [ 'sameAsBilling' => 1 ]
         );
-        $expected = 'Name is required.';
+        $expected = 'Name ' . Validator::LANG_IS_REQUIRED;
         $this->assertContains($expected, $this->obj->error('name'));
     }
 
@@ -104,7 +104,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase {
             [ 'name' => 'required|ifeq:karte=Yes' ],
             [ 'karte' => 'Yes' ]
         );
-        $expected = 'Name is required.';
+        $expected = 'Name ' . Validator::LANG_IS_REQUIRED;
         $this->assertContains($expected, $this->obj->error('name'));
     }
 
