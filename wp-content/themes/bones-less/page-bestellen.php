@@ -44,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			'anlass' => 'required',
 			'lieferdatum' => 'required',
 			'time' => 'required',
-			'anmerkungen' => 'required',
 		];
 
 		$val = new Validator($validationRule, $_POST);
@@ -479,7 +478,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												</div>
 												<div class="input-70"><span class="wpcf7-form-control-wrap t-ir IhreNachriht huge">
 													<?= $Html->Form->textarea('anmerkungen', false, ['cols' => '40', 'rows' => '9', 'class' => 'wpcf7-form-control wpcf7-textarea', 'aria-invalid' => 'false' ]) ?>
-													<?= $val->error('anmerkungen') ?>
 												</span></div>
 											</div>
 										</div>
