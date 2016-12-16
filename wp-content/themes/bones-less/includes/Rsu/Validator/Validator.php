@@ -9,6 +9,8 @@ use Rsu\Validator\Filters\CancelValidatorFilterIfSet;
 
 class Validator {
 
+    const LANG_IS_REQUIRED = 'ist ein pflichtfeld';
+
     /**
      * Array of rules that is use for validation.
      *  [
@@ -153,7 +155,7 @@ class Validator {
 			$satisfied = $this->isSupplied($value);
 
 			if (! $satisfied) {
-				$this->errors[$name] = ucfirst($name) . ' is required.';
+				$this->errors[$name] = ucfirst($name) . ' ' . self::LANG_IS_REQUIRED;
 			}
 			return $satisfied;
 		}
