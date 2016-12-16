@@ -93,6 +93,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Zustellung', 'zustellung');
 			$simpleMail->line('Anmerkungen', 'anmerkungen');
 
+            $simpleMail->addLineBreak(2);
+            $simpleMail->sectionTitle('Cart: Berechnung');
+            $simpleMail->line('Cart: Blumenwert', 'flower-cost');
+            $simpleMail->line('Cart: Karte', 'karte-cost');
+            $simpleMail->line('Cart: Lieferkosten', 'delivery-cost');
+            $simpleMail->line('Cart: Total', 'cart-total');
+
 			MailHelper::customerOrder('Bestellen', $simpleMail->render(), $_POST['E-mail'], $_POST['Vorname']);
 
 			header("Location: " . $_SERVER['HTTP_HOST'] . "/danke-fur-ihre-bestellung");
@@ -498,24 +505,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                     <tbody>
                                                         <tr>
                                                             <td>CHF</td>
-                                                            <td id="flower-cost">-</td>
+                                                            <td id="flower-cost-td">
+                                                                <?= $Html->Form->input('flower-cost', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
                                                             <td>BLUMENWERT +</td>
                                                         </tr>
                                                         <tr>
                                                             <td>CHF</td>
-                                                            <td id="karte-cost">-</td>
+                                                            <td id="karte-cost-td">
+                                                                <?= $Html->Form->input('karte-cost', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
                                                             <td>KARTE</td>
                                                         </tr>
                                                         <tr>
                                                             <td>CHF</td>
-                                                            <td id="delivery-cost">-</td>
+                                                            <td id="delivery-cost-td">
+                                                                <?= $Html->Form->input('delivery-cost', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
                                                             <td id="delivery-cost-caption">LIEFERUNG</td>
                                                         </tr>
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
                                                             <td>CHF</td>
-                                                            <td id="cart-total">-</td>
+                                                            <td id="cart-total-td">
+                                                                <?= $Html->Form->input('cart-total', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
                                                             <td>TOTAL</td>
                                                         </tr>
                                                     </tfoot>

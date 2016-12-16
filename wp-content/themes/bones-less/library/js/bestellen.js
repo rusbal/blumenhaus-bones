@@ -115,23 +115,38 @@ jQuery(document).ready(function($) {
 
     var delivery_cost = 0;
     var isDeliveryCostFound = function(plz) {
-        if (plz) {
-            var plzIndex = 0,
-                costIndex = 2;
-            for (var x = 0; x < delivery_cost_table.length; x += 1) {
-                if (delivery_cost_table[x][plzIndex] == plz) {
-                    delivery_cost = parseFloat(delivery_cost_table[x][costIndex]);
-                    return true;
-                }
+        if (!plz) {
+            return false;
+        }
+        var plzIndex = 0,
+            costIndex = 2;
+        for (var x = 0; x < delivery_cost_table.length; x += 1) {
+            if (delivery_cost_table[x][plzIndex] == plz) {
+                delivery_cost = parseFloat(delivery_cost_table[x][costIndex]);
+                return true;
             }
         }
         return false;
     };
 
+    var getOrt = function(plz) {
+        if (!plz) {
+            return '';
+        }
+        var plzIndex = 0,
+            ortIndex = 1;
+        for (var x = 0; x < delivery_cost_table.length; x += 1) {
+            if (delivery_cost_table[x][plzIndex] == plz) {
+                return delivery_cost_table[x][ortIndex];
+            }
+        }
+        return '';
+    };
+
     var addCartTotal = function() {
-        var flowerCost = parseFloat($('#flower-cost').text().replace(',', '')),
-            karteCost = parseFloat($('#karte-cost').text().replace(',', '')),
-            deliveryCost = parseFloat($('#delivery-cost').text().replace(',', ''));
+        var flowerCost = parseFloat($('#Flower-cost').val().replace(',', '')),
+            karteCost = parseFloat($('#Karte-cost').val().replace(',', '')),
+            deliveryCost = parseFloat($('#Delivery-cost').val().replace(',', ''));
 
         flowerCost = isNaN(flowerCost) ? 0 : flowerCost;
         karteCost = isNaN(karteCost) ? 0 : karteCost;
@@ -150,18 +165,18 @@ jQuery(document).ready(function($) {
     };
 
     var printCartCost = function() {
-        $('#flower-cost').text(getFlowerCost());
-        $('#karte-cost').text(getCardCost());
+        $('#Flower-cost').val(getFlowerCost());
+        $('#Karte-cost').val(getCardCost());
 
         if (isDeliveryCostFound(getDeliveryPlz())) {
-            $('#delivery-cost').text(delivery_cost.formatMoney());
+            $('#Delivery-cost').val(delivery_cost.formatMoney());
             $('#delivery-cost-caption').text('LIEFERUNG');
         } else {
-            $('#delivery-cost').text('-');
+            $('#Delivery-cost').val('-');
             $('#delivery-cost-caption').text(delivery_cost_on_request);
         }
 
-        $('#cart-total').text(addCartTotal().formatMoney());
+        $('#Cart-total').val(addCartTotal().formatMoney());
     };
 
     printCartCost();
@@ -169,7 +184,26 @@ jQuery(document).ready(function($) {
     $('#Preisrahamen, #Aus_karte, input[name=karte], input[name=karte2]').on('change', function(){
         printCartCost();
     });
-    $('input[name=Plz], input[name=liefePlz]').on('keyup', function(){
-        printCartCost();
+
+    $('.delivery-cost input').on('keydown', function(){
+        /**
+         * Ignore input changes because these input fields are "protected"
+         * They are suppose to be calculated values only but set as input fields
+         * so that they will be included on Contact Form DB.
+         */
+        return false;
     });
+
+    var onPlzChange = function($this, name) {
+        $('input[name=' + name + ']').val( getOrt($($this).val()) );
+        printCartCost();
+    };
+
+    $('input[name=Plz]')
+        .on('keyup', function(){ onPlzChange(this, 'Ort'); })
+        .on('change', function(){ onPlzChange(this, 'Ort'); });
+
+    $('input[name=liefePlz]')
+        .on('keyup', function(){ onPlzChange(this, 'liefeOrt'); })
+        .on('change', function(){ onPlzChange(this, 'liefeOrt'); });
 });
