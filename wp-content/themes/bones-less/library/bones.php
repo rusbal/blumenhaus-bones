@@ -314,7 +314,7 @@ function bones_scripts_and_styles() {
 
 
     if ( is_page_template( 'page-bestellen.php' ) ) {
-        wp_register_script('bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '1.1', true);
+        wp_register_script('bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '1.2', true);
         wp_enqueue_script('bestellen');
 
         wp_localize_script('bestellen', '$APP_DATA', [
