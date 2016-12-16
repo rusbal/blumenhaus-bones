@@ -313,12 +313,14 @@ function bones_scripts_and_styles() {
     wp_enqueue_script( 'bones-js' );
 
 
-    wp_localize_script('bones-js', '$APP_DATA', [
+    wp_register_script( 'bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '1.1', true );
+    wp_enqueue_script( 'bestellen' );
+
+    wp_localize_script('bestellen', '$APP_DATA', [
         'card_cost' => Option::get('card_cost'),
         'delivery_cost_on_request' => Option::get('delivery_cost_on_request'),
         'delivery_cost' => Option::get_csv_lines('delivery_cost'),
     ]);
-
 }
 
 }

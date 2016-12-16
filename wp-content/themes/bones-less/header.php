@@ -99,8 +99,7 @@ require_once 'vendor/autoload.php';
 			<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/jquery-ui.js"></script>
 			<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/timepicker.js"></script>
 			<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/custom.js"></script>
-			<script type="text/javascript" src="<?php echo get_template_directory_uri(); ?>/library/js/bestellen.js"></script>
-			
+
 		</head>
 
 
