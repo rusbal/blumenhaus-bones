@@ -314,7 +314,7 @@ function bones_scripts_and_styles() {
 
 
     if ( is_page_template( 'page-bestellen.php' ) ) {
-        wp_enqueue_script('bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '2.3', true);
+        wp_enqueue_script('bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '2.4', true);
 
         wp_localize_script('bestellen', '$APP_DATA', [
             'card_cost' => Option::get('card_cost'),
