@@ -32,18 +32,18 @@ $Html = htmlHelper();
 										]);
 
 										echo $Html->Form->select('preisrahamen', false, [
-											""=>'PREISRAHMEN',
-											"Chf. 30.-" => 'Chf. 30.-',
-											"Chf. 50.-" => 'Chf. 50.-',
-											"Chf. 75.-" => 'Chf. 75.-',
-											"Chf. 100.-" => 'Chf. 100.-',
-											"Chf. 150.-" => 'Chf. 150.-',
-											"Chf. 200.-" => 'Chf. 200.-',
-											"Chf. 250.-" => 'Chf. 250.-',
-											"Chf. 300.-" => 'Chf. 300.-',
-											"Chf. 500.-" => 'Chf. 500.-',
-											"Chf. 800.-" => 'Chf. 800.-',
-											"Chf. 1000.-" => 'Chf. 1000.-',
+											""=>'Blumenwert',
+											"Chf. 30.-" => 'Chf. 30.- Blumenwert',
+											"Chf. 50.-" => 'Chf. 50.- Blumenwert',
+											"Chf. 75.-" => 'Chf. 75.- Blumenwert',
+											"Chf. 100.-" => 'Chf. 100.- Blumenwert',
+											"Chf. 150.-" => 'Chf. 150.- Blumenwert',
+											"Chf. 200.-" => 'Chf. 200.- Blumenwert',
+											"Chf. 250.-" => 'Chf. 250.- Blumenwert',
+											"Chf. 300.-" => 'Chf. 300.- Blumenwert',
+											"Chf. 500.-" => 'Chf. 500.- Blumenwert',
+											"Chf. 800.-" => 'Chf. 800.- Blumenwert',
+											"Chf. 1000.-" => 'Chf. 1000.- Blumenwert',
 										]);
 										?>
 									</div>
