@@ -36,6 +36,8 @@ right up top and clean.
 
 // we're firing all out initial functions at the start
 
+use Rsu\Settings\Option;
+
 add_action('after_setup_theme','bones_ahoy', 15);
 
 
@@ -311,6 +313,11 @@ function bones_scripts_and_styles() {
     wp_enqueue_script( 'bones-js' );
 
 
+    wp_localize_script('bones-js', '$APP_DATA', [
+        'card_cost' => Option::get('card_cost'),
+        'delivery_cost_on_request' => Option::get('delivery_cost_on_request'),
+        'delivery_cost' => Option::get_csv_lines('delivery_cost'),
+    ]);
 
 }
 

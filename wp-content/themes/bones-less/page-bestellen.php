@@ -23,13 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$validationRule = [
 			'Vorname' => 'required',
 			'Strasse' => 'required',
-			'PlzOrt' => 'required',
+			'Plz' => 'required',
+            'Ort' => 'required',
 			'Telefon' => 'required',
 			'E-mail' => 'required',
 
 			'liefeVorname' => 'required|ifnotset:sameAsBilling',
 			'liefeStrasse' => 'required|ifnotset:sameAsBilling',
-			'liefePlzOrt' => 'required|ifnotset:sameAsBilling',
+			'liefePlz' => 'required|ifnotset:sameAsBilling',
+            'liefeOrt' => 'required|ifnotset:sameAsBilling',
 			'liefeTelefon' => 'required|ifnotset:sameAsBilling',
 			'liefeE-mail' => 'required|ifnotset:sameAsBilling',
 
@@ -57,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$simpleMail->line('Privatperson oder Firma', 'private');
 			$simpleMail->line('Name', 'Vorname');
 			$simpleMail->line('Strasse', 'Strasse');
-			$simpleMail->line('Plz, Ort', 'PlzOrt');
+			$simpleMail->line('Plz', 'Plz');
+            $simpleMail->line('Ort', 'Ort');
 			$simpleMail->line('Telefon', 'Telefon');
 			$simpleMail->line('E-mail', 'E-mail');
 			$simpleMail->addLineBreak(2);
@@ -70,7 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if ( ! isset( $_POST['sameAsBilling'] ) ) {
 				$simpleMail->line('Name', 'liefeVorname');
 				$simpleMail->line('Strasse', 'liefeStrasse');
-				$simpleMail->line('Plz, Ort', 'liefePlzOrt');
+				$simpleMail->line('Plz', 'liefePlz');
+                $simpleMail->line('Ort', 'liefeOrt');
 				$simpleMail->line('Telefon', 'liefeTelefon');
 				$simpleMail->line('E-mail', 'liefeE-mail');
 			}
@@ -167,13 +171,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<?= $Html->Form->input('Strasse', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
 												<?= $val->error('Strasse') ?>
 											</span></div>
-											<div class="input-30">
-												<p>Plz, Ort</p>
-											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap PlzOrt">
-												<?= $Html->Form->input('PlzOrt', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
-												<?= $val->error('PlzOrt') ?>
+
+                                            <div class="input-30"> <p>Plz</p> </div>
+                                            <div class="input-70"> <span class="wpcf7-form-control-wrap Plz">
+												<?= $Html->Form->input('Plz', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+                                                <?= $val->error('Plz') ?>
 											</span></div>
+
+											<div class="input-30"> <p>Ort</p> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Ort">
+												<?= $Html->Form->input('Ort', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('Ort') ?>
+											</span></div>
+
 											<div class="input-30">
 												<p>Telefon</p>
 											</div>
@@ -211,13 +221,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<?= $Html->Form->input('liefeStrasse', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
 												<?= $val->error('liefeStrasse') ?>
 											</span></div>
-											<div class="input-30">
-												<p>Plz, Ort</p>
-											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap PlzOrt">
-												<?= $Html->Form->input('liefePlzOrt', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
-												<?= $val->error('liefePlzOrt') ?>
+
+                                            <div class="input-30"> <p>Plz</p> </div>
+                                            <div class="input-70"> <span class="wpcf7-form-control-wrap liefePlz">
+												<?= $Html->Form->input('liefePlz', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+                                                <?= $val->error('liefePlz') ?>
 											</span></div>
+
+											<div class="input-30"> <p>Ort</p> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap liefeOrt">
+												<?= $Html->Form->input('liefeOrt', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('liefeOrt') ?>
+											</span></div>
+
 											<div class="input-30">
 												<p>Telefon</p>
 											</div>
@@ -467,8 +483,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												</span></div>
 											</div>
 										</div>
-									</div>
+                                    </div>
 
+                                    <div class="clearfix">
+                                        <div class="half-15">
+                                            <div class="input-100 clearfix">&nbsp;</div>
+                                        </div>
+                                        <div class="half-15">
+                                            <div class="delivery-cost">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="3">IHRE BESTELLUNG:</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="flower-cost">-</td>
+                                                            <td>BLUMENWERT +</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="karte-cost">-</td>
+                                                            <td>KARTE</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="delivery-cost">-</td>
+                                                            <td id="delivery-cost-caption">LIEFERUNG</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="cart-total">-</td>
+                                                            <td>TOTAL</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
 
 									<h3 class="underline">ALLE FELDER AUSGEFÜLLT, Dann Freuen Wir Uns Auf Ihre...</h3>
 
