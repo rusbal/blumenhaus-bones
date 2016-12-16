@@ -58,7 +58,7 @@ class SimpleEmailBuilder
 	 */
 	public function line($caption, $data, $condition = [], $dataOptions = [])
 	{
-		$message = $this->lineBuilder($caption, $data, $condition);
+		$message = $this->lineBuilder($caption, $data, $condition, $dataOptions);
 
 		if ($message) {
             $value = $this->getValue($data);
@@ -66,9 +66,6 @@ class SimpleEmailBuilder
             /**
              * For body (email)
              */
-            if (isset($dataOptions['valueWhenNotNumeric']) && !is_numeric($value)) {
-                $message .= '<i>' . $dataOptions['valueWhenNotNumeric'] . '</i>';
-            }
             $this->body[] = $message;
 
             /**
@@ -127,7 +124,7 @@ class SimpleEmailBuilder
 	 *
 	 * @return null|string
 	 */
-	private function lineBuilder($caption, $data, $condition = [])
+	private function lineBuilder($caption, $data, $condition = [], $dataOptions = [])
 	{
 		$value = $this->getValue($data);
 
@@ -136,6 +133,12 @@ class SimpleEmailBuilder
 		}
 
 		if ($value) {
+            if (isset($dataOptions['valueWhenNotNumeric']) && !is_numeric($value)) {
+                $value .= '<i>' . $dataOptions['valueWhenNotNumeric'] . '</i>';
+            } elseif (isset($dataOptions['valuePrefix'])) {
+                $value = $dataOptions['valuePrefix'] . ' ' . $value;
+            }
+
 			return "<strong>$caption:</strong> " . $value . '<br>';
 		}
 
