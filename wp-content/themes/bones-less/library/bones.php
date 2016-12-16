@@ -170,7 +170,7 @@ function bones_head_cleanup() {
 
   // remove Wp version from scripts
 
-	add_filter( 'script_loader_src', 'bones_remove_wp_ver_css_js', 9999 );
+//	add_filter( 'script_loader_src', 'bones_remove_wp_ver_css_js', 9999 );
 
 
 
@@ -314,8 +314,7 @@ function bones_scripts_and_styles() {
 
 
     if ( is_page_template( 'page-bestellen.php' ) ) {
-        wp_register_script('bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '1.2', true);
-        wp_enqueue_script('bestellen');
+        wp_enqueue_script('bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '2.3', true);
 
         wp_localize_script('bestellen', '$APP_DATA', [
             'card_cost' => Option::get('card_cost'),
@@ -323,7 +322,7 @@ function bones_scripts_and_styles() {
             'delivery_cost' => Option::get_csv_lines('delivery_cost'),
         ]);
     }
-}
+    }
 
 }
 
