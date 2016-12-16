@@ -164,26 +164,9 @@ jQuery(document).ready(function($) {
         return price;
     };
 
-    var printCartCost = function() {
-        $('#Flower-cost').val(getFlowerCost());
-        $('#Karte-cost').val(getCardCost());
-
-        if (isDeliveryCostFound(getDeliveryPlz())) {
-            $('#Delivery-cost').val(delivery_cost.formatMoney());
-            $('#delivery-cost-caption').text('LIEFERUNG');
-        } else {
-            $('#Delivery-cost').val('-');
-            $('#delivery-cost-caption').text(delivery_cost_on_request);
-        }
-
-        $('#Cart-total').val(addCartTotal().formatMoney());
+    var willPickupAtStore = function() {
+        return $('#Zustellung').val().toUpperCase() == 'ABHOLUNG IM BLUMENHAUS WIEDIKON';
     };
-
-    printCartCost();
-
-    $('#Preisrahamen, #Aus_karte, input[name=karte], input[name=karte2]').on('change', function(){
-        printCartCost();
-    });
 
     $('.delivery-cost input').on('keydown', function(){
         /**
@@ -193,6 +176,24 @@ jQuery(document).ready(function($) {
          */
         return false;
     });
+
+    var printCartCost = function() {
+        $('#Flower-cost').val(getFlowerCost());
+        $('#Karte-cost').val(getCardCost());
+
+        $('#delivery-cost-caption').text('LIEFERUNG');
+
+        if (willPickupAtStore()) {
+            $('#Delivery-cost').val((0).formatMoney());
+        } else if (isDeliveryCostFound(getDeliveryPlz())) {
+            $('#Delivery-cost').val(delivery_cost.formatMoney());
+        } else {
+            $('#Delivery-cost').val('-');
+            $('#delivery-cost-caption').text(delivery_cost_on_request);
+        }
+
+        $('#Cart-total').val(addCartTotal().formatMoney());
+    };
 
     var onPlzChange = function($this, name) {
         $('input[name=' + name + ']').val( getOrt($($this).val()) );
@@ -206,4 +207,13 @@ jQuery(document).ready(function($) {
     $('input[name=liefePlz]')
         .on('keyup', function(){ onPlzChange(this, 'liefeOrt'); })
         .on('change', function(){ onPlzChange(this, 'liefeOrt'); });
+
+    $('#Preisrahamen, #Aus_karte, input[name=karte], input[name=karte2], #Zustellung').on('change', function(){
+        printCartCost();
+    });
+
+    /**
+     * Compute cart onload
+     */
+    printCartCost();
 });
