@@ -1,0 +1,17 @@
+{
+    "require": {
+        "snscripts/html-helper": "1.*",
+        "anahkiasen/underscore-php": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rsu\\": "includes/Rsu"
+        },
+        "files": [
+            "includes/helpers/html_helper.php"
+        ]
+    }
+}
