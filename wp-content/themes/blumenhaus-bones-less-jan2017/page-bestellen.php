@@ -6,108 +6,110 @@ Template Name: Bestellen
 
 */
 
+use Rsu\ContactForm\DbWriter\DbWriterLogger;
+use Rsu\EmailBuilder\SimpleEmailBuilder;
+use Rsu\Mail\MailHelper;
+use Rsu\Settings\Option;
+use Rsu\Slugify\Slugify;
+use Rsu\Validator\Validator;
 
-
-
+$val = new Validator();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+	if ($_POST['form-name'] == 'bestellen') {
 
+		/**
+		 * Validation
+		 */
+		$validationRule = [
+			'Vorname' => 'required',
+			'Strasse' => 'required',
+			'Plz' => 'required',
+            'Ort' => 'required',
+			'Telefon' => 'required',
+			'E-mail' => 'required',
 
-	
+			'liefeVorname' => 'required|ifnotset:sameAsBilling',
+			'liefeStrasse' => 'required|ifnotset:sameAsBilling',
+			'liefePlz' => 'required|ifnotset:sameAsBilling',
+            'liefeOrt' => 'required|ifnotset:sameAsBilling',
+			'liefeTelefon' => 'required|ifnotset:sameAsBilling',
+			'liefeE-mail' => 'required|ifnotset:sameAsBilling',
 
+			'preisrahamen' => 'required',
+			'blumenart' => 'required',
+			'blumenfarbe' => 'required',
+			'karte' => 'required',
+			'aus_karte' => 'required|ifeq:karte=Mit Karte',
+			'kartentext' => 'required|ifeq:karte=Mit Karte',
+			'anlass' => 'required',
+			'lieferdatum' => 'required',
+			'time' => 'required',
+		];
 
-	$message = '<html><head><title>Blumenbestellung</title></head><body>';
-	$message .= '<p>Über das Bestellformular unter www.blumenhaus-wiedikon.ch ging folgende Bestellung ein:g</p>';
+		$val = new Validator($validationRule, $_POST);
 
-	$message.='<strong>BESTELLUNG</strong><br><br>';
-	$message.='<hr>'; 
-	
-	if(isset($_POST['preisrahamen']) && $_POST['preisrahamen'] != '0'){
-		
-		$message.= '<strong>Preisrahamen:</strong> '.$_POST['preisrahamen'].'<br>';
-	}
-	if(isset($_POST['blumenart']) && $_POST['blumenart'] != '0'){
-		$message.= '<strong>Blumenart:</strong> '.$_POST['blumenart'].'<br>';
-	}
-	if(isset($_POST['blumenfarbe']) && $_POST['blumenfarbe'] != '0'){
-		$message.= '<strong>Blumenfarbe:</strong> '.$_POST['blumenfarbe'].'<br>';
-	}
-	if(isset($_POST['karte'])){
-		$message.= '<strong>karte:</strong> '.$_POST['karte'].'<br>';
-	}
-	if(isset($_POST['aus_karte']) && $_POST['aus_karte'] != '0'){
-		$message.= '<strong>Auswählen:</strong> '.$_POST['aus_karte'].'<br>';
-	}
-	if(isset($_POST['kartentext']) && $_POST['kartentext'] != ''){
-		$message.= '<strong>Kartentext:</strong> '.$_POST['kartentext'].'<br>';
-	}
-	if(isset($_POST['date']) && $_POST['date'] != ''){
-		$message.= '<strong>Lieferdatum:</strong> '.$_POST['date'].'<br>';
-	}
-	if(isset($_POST['time'])){
-		$message.= '<strong>Zeit:</strong> '.$_POST['time'].'<br>';
-	}
-	if(isset($_POST['anmerkungen']) && $_POST['anmerkungen'] != ''){
-		$message.= '<strong>Anmerkungen:</strong> '.$_POST['anmerkungen'].'<br>';
-	}
-	$message.='<br><strong>RECHNUNGSADRESSE</strong><br><br>';
-	$message.='<hr>';
-	if(isset($_POST['private'])){
-		$message.= '<strong>Privatperson or firma:</strong> '.$_POST['private'].'<br>'; 
-	}
-	$message.='<hr>';
-	if(isset($_POST['Vorname']) && $_POST['Vorname'] != '' ){
-		$message.= '<strong>Name:</strong> '.$_POST['Vorname'].'<br>'; 
-	}
-	if(isset($_POST['Strasse']) && $_POST['Strasse'] != ''){
-		$message.= '<strong>Strasse:</strong> '.$_POST['Strasse'].'<br>'; 
-	}
-	if(isset($_POST['PlzOrt']) && $_POST['PlzOrt'] != ''){
-		$message.= '<strong>Plz, Ort:</strong> '.$_POST['PlzOrt'].'<br>'; 
-	}
-	if(isset($_POST['Telefon']) && $_POST['Telefon'] != ''){
-		$message.= '<strong>Telefon:</strong> '.$_POST['Telefon'].'<br>'; 
-	}
-	if(isset($_POST['E-mail']) && $_POST['E-mail'] != ''){
-		$message.= '<strong>E-mail:</strong> '.$_POST['E-mail'].'<br><br>'; 
-	}
-	$message.='<strong>LIEFERADRESSE</strong><br><br>';
-	$message.='<hr>';
-	if(isset($_POST['sameAsBilling'])){
-		$message.= '<strong>Same As Billing:</strong> Ja <br>'; 
-	}
-	$message.='<hr>';
+		if ($val->success()) {
+		    $logger = new DbWriterLogger('Order form', $wpdb, (new Slugify()));
 
-	if(isset($_POST['liefeVorname'])){
-		$message.= '<strong>Name:</strong> '.$_POST['liefeVorname'].'<br>'; 
+			$simpleMail = new SimpleEmailBuilder($_POST, $logger);
+			$simpleMail->header('Bestellen');
+
+			$simpleMail->sectionTitle('Rechnungsadresse');
+			$simpleMail->line('Privatperson oder Firma', 'private');
+			$simpleMail->line('Name', 'Vorname');
+			$simpleMail->line('Strasse', 'Strasse');
+			$simpleMail->line('Plz', 'Plz');
+            $simpleMail->line('Ort', 'Ort');
+			$simpleMail->line('Telefon', 'Telefon');
+			$simpleMail->line('E-mail', 'E-mail');
+			$simpleMail->addLineBreak(2);
+
+			$simpleMail->sectionTitle('Lieferadresse');
+			$simpleMail->line('wie Rechnungsadresse', [
+				'sameAsBilling', 'Ja', 'Nein'
+			]);
+
+			if ( ! isset( $_POST['sameAsBilling'] ) ) {
+				$simpleMail->line('Name', 'liefeVorname');
+				$simpleMail->line('Strasse', 'liefeStrasse');
+				$simpleMail->line('Plz', 'liefePlz');
+                $simpleMail->line('Ort', 'liefeOrt');
+				$simpleMail->line('Telefon', 'liefeTelefon');
+				$simpleMail->line('E-mail', 'liefeE-mail');
+			}
+			$simpleMail->addLineBreak(2);
+
+			$simpleMail->sectionTitle('Ihre Bestellung');
+			$simpleMail->line('Preisrahmen', 'preisrahamen', ['!=' => 0]);
+			$simpleMail->line('Blumenart', 'blumenart', ['!=' => 0]);
+            $simpleMail->line('Rote Rosen Angebot', 'rote_rosen', ['!=' => '']);
+			$simpleMail->line('Blumenfarbe', 'blumenfarbe', ['!=' => 0]);
+			$simpleMail->line('Karte', 'karte');
+			$simpleMail->line('Auswählen', 'aus_karte', ['!=' => 0]);
+			$simpleMail->line('Kartentext', 'kartentext');
+			$simpleMail->line('Anlass', 'anlass', ['!=' => 0]);
+			$simpleMail->line('Lieferdatum', 'lieferdatum');
+			$simpleMail->line('Zeit', 'time');
+			$simpleMail->line('Zustellung', 'zustellung');
+			$simpleMail->line('Anmerkungen', 'anmerkungen');
+
+            $simpleMail->addLineBreak(2);
+            $simpleMail->line('Blumenwert', 'flower-cost', [], [ 'valuePrefix' => 'Chf.' ]);
+            $simpleMail->line('Kartenkosten', 'karte-cost', [], [ 'valuePrefix' => 'Chf.' ]);
+            $simpleMail->line('Lieferkosten', 'delivery-cost', [], [
+                'valuePrefix' => 'Chf.',
+                'valueWhenNotNumeric' => Option::get('delivery_cost_on_request'),
+            ]);
+            $simpleMail->line('Total', 'cart-total', [], [ 'valuePrefix' => 'Chf.' ]);
+
+			MailHelper::customerOrder('Bestellen', $simpleMail->render(), $_POST['E-mail'], $_POST['Vorname']);
+
+			header("Location: " . $_SERVER['HTTP_HOST'] . "/danke-fur-ihre-bestellung");
+			exit;
+		}
 	}
-
-	if(isset($_POST['liefeStrasse'])){
-		$message.= '<strong>Strasse:</strong> '.$_POST['liefeStrasse'].'<br>'; 
-	}
-
-	if(isset($_POST['liefePlzOrt'])){
-		$message.= '<strong>Plz, Ort:</strong> '.$_POST['liefePlzOrt'].'<br>'; 
-	}
-
-	if(isset($_POST['liefeTelefon'])){
-		$message.= '<strong>Telefon:</strong> '.$_POST['liefeTelefon'].'<br>'; 
-	}
-
-	if(isset($_POST['liefeE-mail'])){
-		$message.= '<strong>E-mail:</strong> '.$_POST['liefeE-mail'].'<br><br><br>'; 
-	}
-
-
-
-	$message.='</body></html>';
-	
-	$headers  = 'MIME-Version: 1.0' . "\r\n";
-	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-
-	mail('info@blumenhaus-wiedikon.ch', 'Bestellen', $message, $headers);
 }
-
 
 ?>
 
@@ -150,43 +152,66 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 							<div role="form">
 
 								<form method="post">
+									<?php echo $Html->Form->hidden('form-name', ['value' => 'bestellen']); ?>
 
 									<div class="clearfix">
 										<div class="half-15">
 											<p class="gr-title">Rechnungsadresse</p>
 											<div class="input-30 radios">
-												<input type="radio" name="private" value="Privatperson" id="privatperson" checked> <label for="privatperson">Privatperson</label>
+												<input type="radio" name="private" value="Privatperson" id="privatperson" <?= $_POST['private'] != 'Firma' ? 'checked' : null ?>> <label for="privatperson">Privatperson</label>
 												<div class="check"></div>
 											</div>
 											<div class="input-70 radios">
-												<input type="radio" name="private" value="Firma" id="firma"> <label for="firma">Firma</label>
+												<input type="radio" name="private" value="Firma" id="firma" <?= $_POST['private'] == 'Firma' ? 'checked' : null ?>> <label for="firma">Firma</label>
+												<?= $val->error('Firma') ?>
 												<div class="check"></div>
 											</div>
 											<div class="input-30">
 												<p>Vorname, Name</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap Vorname"><input type="text" name="Vorname" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Vorname">
+												<?= $Html->Form->input('Vorname', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('Vorname') ?>
+											</span> </div>
 											<div class="input-30">
 												<p>Strasse</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap Strasse"><input type="text" name="Strasse" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span></div>
-											<div class="input-30">
-												<p>Plz, Ort</p>
-											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap PlzOrt"><input type="text" name="PlzOrt" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span></div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Strasse">
+												<?= $Html->Form->input('Strasse', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('Strasse') ?>
+											</span></div>
+
+                                            <div class="input-30"> <p>Plz</p> </div>
+                                            <div class="input-70"> <span class="wpcf7-form-control-wrap Plz">
+												<?= $Html->Form->input('Plz', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+                                                <?= $val->error('Plz') ?>
+											</span></div>
+
+											<div class="input-30"> <p>Ort</p> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Ort">
+												<?= $Html->Form->input('Ort', false, ['size' => '40', 'class' => 'wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('Ort') ?>
+											</span></div>
+
 											<div class="input-30">
 												<p>Telefon</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap Telefon"><input type="text" name="Telefon" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-tel" aria-invalid="false"></span></div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Telefon">
+												<?= $Html->Form->input('Telefon', false, ['type' => 'text', 'size' => '40', 'class' => 'wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-tel', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('Telefon') ?>
+											</span></div>
 											<div class="input-30">
 												<p>e-mail</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap e-mail"><input type="text" name="E-mail" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" aria-invalid="false"></span> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap e-mail">
+												<?= $Html->Form->input('E-mail', false, ['type' => 'email', 'size' => '40', 'class' => 'wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('E-mail') ?>
+											</span> </div>
 										</div>
 										<div class="half-15">
 											<p class="gr-title">Lieferadresse</p>
 											<div class="input-70 radios">
-												<input type="checkbox" name="sameAsBilling" value="Gleich Wie Rechnungsadresse" id="same"> <label for="same">Gleich Wie Rechnungsadresse</label>
+												<input type="checkbox" name="sameAsBilling" value="Gleich Wie Rechnungsadresse" id="same" <?= $_POST['sameAsBilling'] ? 'checked' : null ?>> <label for="same">Gleich Wie Rechnungsadresse</label>
 												<div class="check"></div>
 											</div>
 											<div class="input-30"></div>
@@ -194,23 +219,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 											<div class="input-30">
 												<p>Vorname, Name</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap Vorname"><input type="text" name="liefeVorname" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Vorname">
+												<?= $Html->Form->input('liefeVorname', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('liefeVorname') ?>
+											</span> </div>
 											<div class="input-30">
 												<p>Strasse</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap Strasse"><input type="text" name="liefeStrasse" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span></div>
-											<div class="input-30">
-												<p>Plz, Ort</p>
-											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap PlzOrt"><input type="text" name="liefePlzOrt" value="" size="40" class="wpcf7-form-control wpcf7-text" aria-invalid="false"></span></div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Strasse">
+												<?= $Html->Form->input('liefeStrasse', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('liefeStrasse') ?>
+											</span></div>
+
+                                            <div class="input-30"> <p>Plz</p> </div>
+                                            <div class="input-70"> <span class="wpcf7-form-control-wrap liefePlz">
+												<?= $Html->Form->input('liefePlz', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+                                                <?= $val->error('liefePlz') ?>
+											</span></div>
+
+											<div class="input-30"> <p>Ort</p> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap liefeOrt">
+												<?= $Html->Form->input('liefeOrt', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('liefeOrt') ?>
+											</span></div>
+
 											<div class="input-30">
 												<p>Telefon</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap Telefon"><input type="text" name="liefeTelefon" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-tel" aria-invalid="false"></span></div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap Telefon">
+												<?= $Html->Form->input('liefeTelefon', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text wpcf7-tel wpcf7-validates-as-tel', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('liefeTelefon') ?>
+											</span></div>
 											<div class="input-30">
 												<p>e-mail</p>
 											</div>
-											<div class="input-70"> <span class="wpcf7-form-control-wrap e-mail"><input type="text" name="liefeE-mail" value="" size="40" class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email" aria-invalid="false"></span> </div>
+											<div class="input-70"> <span class="wpcf7-form-control-wrap e-mail">
+												<?= $Html->Form->input('liefeE-mail', false, ['size' => '40', 'class' => 'whenNotSameAsBilling wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-email', 'aria-invalid' => 'false']) ?>
+												<?= $val->error('liefeE-mail') ?>
+											</span> </div>
 										</div>
 									</div>
 
@@ -223,137 +269,142 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>PREISRAHMEN</p>
 												</div>
-												<div class="input-40"> 
-													<?php 
-													if(isset($_POST['preisrahamen_bar'])){ 
-														$preis = $_POST['preisrahamen_bar']; 
-													}
-													else{
-														$preis = 0;
-
-													}
-													?>
-													<select name="preisrahamen">
-														<option value="0" <?php if($preis == '0') print 'selected'; ?>>PREISRAHMEN</option>
-														<option value="CHF 30.–" <?php if($preis == '30') print 'selected'; ?>>CHF 30.–</option>	
-														<option value="CHF 50.–" <?php if($preis == '50') print 'selected'; ?>>CHF 50.–</option>	
-														<option value="CHF 75.–" <?php if($preis == '75') print 'selected'; ?>>CHF 75.–</option>
-														<option value="CHF 100.–" <?php if($preis == '100') print 'selected'; ?>>CHF 100.–</option>
-														<option value="CHF 150.–" <?php if($preis == '150') print 'selected'; ?>>CHF 150.–</option>
-														<option value="CHF 200.–" <?php if($preis == '200') print 'selected'; ?>>CHF 200.–</option>
-														<option value="CHF 250.–" <?php if($preis == '250') print 'selected'; ?>>CHF 250.–</option>
-														<option value="CHF 300.–" <?php if($preis == '300') print 'selected'; ?>>CHF 300.–</option>
-														<option value="CHF 500.–" <?php if($preis == '500') print 'selected'; ?>>CHF 500.–</option>
-														<option value="CHF 800.–" <?php if($preis == '800') print 'selected'; ?>>CHF 800.–</option>
-														<option value="CHF 1’000.–" <?php if($preis == '1000') print 'selected'; ?>>CHF 1’000.–</option>						
-													</select>
+												<div class="input-70">
+												<?php
+												echo $Html->Form->select('preisrahamen', false, [
+													"" => 'Blumenwert',
+													"Chf. 30.-" => 'Chf. 30.- Blumenwert',
+													"Chf. 50.-" => 'Chf. 50.- Blumenwert',
+													"Chf. 75.-" => 'Chf. 75.- Blumenwert',
+													"Chf. 100.-" => 'Chf. 100.- Blumenwert',
+													"Chf. 150.-" => 'Chf. 150.- Blumenwert',
+													"Chf. 200.-" => 'Chf. 200.- Blumenwert',
+													"Chf. 250.-" => 'Chf. 250.- Blumenwert',
+													"Chf. 300.-" => 'Chf. 300.- Blumenwert',
+													"Chf. 500.-" => 'Chf. 500.- Blumenwert',
+													"Chf. 800.-" => 'Chf. 800.- Blumenwert',
+													"Chf. 1000.-" => 'Chf. 1000.- Blumenwert',
+												], [
+													'selected' => $_POST['preisrahamen'],
+												]);
+												?>
+												<?= $val->error('preisrahamen') ?>
 												</div>
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>Blumenart</p>
 												</div>
-												<div class="input-40"> 
-													<?php 
-													if(isset($_POST['blumenschmuck_bar'])){ 
-														$blukart = $_POST['blumenschmuck_bar']; 
-													}
-													else{
-														$blukart = 0;
-
-													}
-													?>
-													<select name="blumenart">
-														<option value="0" <?php if($blukart == '0') print 'selected'; ?>>BLUMENSCHMUCK</option>
-														<option value="BLUMENSTRASS" <?php if($blukart == 'BLUMENSTRASS') print 'selected'; ?>>BLUMENSTRASS</option>	
-														<option value="BLUMENKORB" <?php if($blukart == 'BLUMENKORB') print 'selected'; ?>>BLUMENKORB</option>	
-														<option value="BLUMENHERZ" <?php if($blukart == 'BLUMENHERZ') print 'selected'; ?>>BLUMENHERZ</option>	
-														<option value="ROSEN" <?php if($blukart == 'ROSEN') print 'selected'; ?>>ROSEN</option>	
-														<option value="ORCHIDEEN-PFLANZE" <?php if($blukart == 'ORCHIDEEN-PFLANZE') print 'selected'; ?>>ORCHIDEEN-PFLANZE</option>			
-													</select>
+												<div class="input-70">
+												<?php
+												echo $Html->Form->select('blumenart', false, [
+													"" => 'BLUMENSCHMUCK',
+													"Blumenstrauss" => 'Blumenstrauss',
+													"Blumenkorb" => 'Blumenkorb',
+													"Blumenherz" => 'Blumenherz',
+													"Rosen" => 'Rosen',
+													"Orchideen-Pflanze" => 'Orchideen-Pflanze',
+												], [
+													'selected' => $_POST['blumenart'],
+												]);
+												?>
+												<?= $val->error('blumenart') ?>
 												</div>
 											</div>
+                                            <div class="input-100 clearfix">
+                                                <div class="input-30">
+                                                    <p>Rote Rosen</p>
+                                                </div>
+                                                <div class="input-70">
+                                                    <?php
+                                                    echo $Html->Form->select('rote_rosen', false, [
+                                                        "" => 'Rote Rosen Angebot',
+                                                        "1x langstielige rote Rose à 6.50" => '1x langstielige rote Rose à 6.50',
+                                                        "10x langstielige rote Rose à 6.20" => '10x langstielige rote Rose à 6.20',
+                                                        "30x langstielige rote Rose à 5.80" => '30x langstielige rote Rose à 5.80',
+                                                    ], [
+                                                        'selected' => $_POST['rote_rosen'],
+                                                    ]);
+                                                    ?>
+                                                    <?= $val->error('rote_rosen') ?>
+                                                </div>
+                                            </div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>Blumenfarbe</p>
 												</div>
-												<div class="input-40"> 
-													<?php 
-													if(isset($_POST['blumenfarbe_bar'])){ 
-														$farbe = $_POST['blumenfarbe_bar']; 
-													}
-													else{
-														$farbe = 0;
-
-													}
-													?>
-													<select name="blumenfarbe">
-														<option value="0" <?php if($farbe == '0') print 'selected'; ?>>Blumenfarbe</option>
-														<option value="WEISS" <?php if($farbe == 'WEISS') print 'selected'; ?>>WEISS</option>	
-														<option value="GELB" <?php if($farbe == 'GELB') print 'selected'; ?>>GELB</option>	
-														<option value="ROT" <?php if($farbe == 'ROT') print 'selected'; ?>>ROT</option>		
-														<option value="ROSA" <?php if($farbe == 'ROSA') print 'selected'; ?>>ROSA</option>					
-														<option value="FUCHSIA" <?php if($farbe == 'FUCHSIA') print 'selected'; ?>>FUCHSIA</option>	
-														<option value="ORANGE" <?php if($farbe == 'ORANGE') print 'selected'; ?>>ORANGE</option>	
-														<option value="OVIOLETT" <?php if($farbe == 'OVIOLETT') print 'selected'; ?>>VIOLETT</option>	
-														<option value="BLAU" <?php if($farbe == 'BLAU') print 'selected'; ?>>BLAU</option>	
-														<option value="GRÜN" <?php if($farbe == 'GRÜN') print 'selected'; ?>>GRÜN</option>							
-													</select>
+												<div class="input-70">
+												<?php
+												echo $Html->Form->select('blumenfarbe', false, [
+													"" => 'Blumenfarbe',
+													"Weiss" => 'Weiss',
+													"Gelb" => 'Gelb',
+													"Rot" => 'Rot',
+													"Rosa" => 'Rosa',
+													"Fuchsia" => 'Fuchsia',
+													"Orange" => 'Orange',
+													"Violett" => 'Violett',
+													"Blau" => 'Blau',
+													"Grün" => 'Grün',
+												], [
+													'selected' => $_POST['blumenfarbe'],
+												]);
+												?>
+												<?= $val->error('blumenfarbe') ?>
 												</div>
 											</div>
 											<div class="input-100 clearfix">
-												<?php 
-												$karte = 'OHNE KARTE';
-												if(isset($_POST['karte_bar'])){ 
-													$karte = $_POST['karte_bar']; 
-												}
-
-
-												?>
 												<div class="input-30 radios">
-													<input type="radio" name="karte" value="OHNE KARTE" id="karte" <?php if($karte == 'OHNE KARTE') print 'checked'; ?> > <label for="karte">Ohne Karte</label><div class="check"></div>
+													<input type="radio" name="karte" value="Ohne Karte" id="karte"
+														<?= ($_POST['karte'] == 'Ohne Karte') ? 'checked' : '' ?>
+													> <label for="karte">Ohne Karte</label><div class="check"></div>
 												</div>
 												<div class="input-30 radios">
-													<input type="radio" name="karte" value="MIT KARTE" id="karte2" <?php if($karte == 'MIT KARTE') print 'checked'; ?>> <label for="karte2">Mit Karte</label><div class="check"></div>
+													<input type="radio" name="karte" value="Mit Karte" id="karte2"
+														<?= ($_POST['karte'] != 'Ohne Karte') ? 'checked' : '' ?>
+													> <label for="karte2">Mit Karte</label><div class="check"></div>
 												</div>
 												<div class="input-40">
-													<select name="aus_karte" disabled="disabled">
-														<option value="0">Auswählen</option>
-														<option value="Sonnenschein">Sonnenschein</option>	
-														<option value="Rosenkavalier">Rosenkavalier</option>	
-														<option value="Von Herzen">Von Herzen</option>	
-														<option value="Happy Day">Happy Day</option>	
-														<option value="Viel Glück">Viel Glück</option>	
-														<option value="Edle Rose">Edle Rose</option>
-														<option value="Baby">Baby</option>							
-													</select>
-
-
+												<?php
+												echo $Html->Form->select('aus_karte', false, [
+													"" => 'Auswählen',
+													"Sonnenschein" => 'Sonnenschein',
+													"Rosenkavalier" => 'Rosenkavalier',
+													"Von Herzen" => 'Von Herzen',
+													"Happy Day" => 'Happy Day',
+													"Viel Glück" => 'Viel Glück',
+													"Edle Rose" => 'Edle Rose',
+													"Baby" => 'Baby',
+												], [
+													'selected' => $_POST['aus_karte'],
+												]);
+												?>
+												<?= $val->error('aus_karte') ?>
 												</div>
 											</div>
-											<div class="input-100 galerie">
+											<div class="input-100 galerie sh">
 												<div class="input-30"></div>
 												<div class="input-70 clearfix">
 													<div class="input-13">
-														<a href="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g1.jpg" rel="lightbox" title="Sonnenschein"><img src="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g1.jpg"></a>
+														<a href="/wp-content/themes/bones-less/library/images/g1.jpg" rel="lightbox" title="Sonnenschein"><img src="/wp-content/themes/bones-less/library/images/g1.jpg"></a>
 													</div>
 													<div class="input-13">
-														<a href="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g2.jpg" rel="lightbox" title="Rosenkavalier"><img src="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g2.jpg"></a>
+														<a href="/wp-content/themes/bones-less/library/images/g2.jpg" rel="lightbox" title="Rosenkavalier"><img src="/wp-content/themes/bones-less/library/images/g2.jpg"></a>
 													</div>
 													<div class="input-13">
-														<a href="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g3.jpg" rel="lightbox" title="Von Herzen"><img src="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g3.jpg"></a>
+														<a href="/wp-content/themes/bones-less/library/images/g3.jpg" rel="lightbox" title="Von Herzen"><img src="/wp-content/themes/bones-less/library/images/g3.jpg"></a>
 													</div>
 													<div class="input-13">
-														<a href="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g4.jpg" rel="lightbox" title="Happy Day"><img src="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g4.jpg"></a>
+														<a href="/wp-content/themes/bones-less/library/images/g4.jpg" rel="lightbox" title="Happy Day"><img src="/wp-content/themes/bones-less/library/images/g4.jpg"></a>
 													</div>
 													<div class="input-13">
-														<a href="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g5.jpg" rel="lightbox" title="Viel Glück"><img src="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g5.jpg"></a>
+														<a href="/wp-content/themes/bones-less/library/images/g5.jpg" rel="lightbox" title="Viel Glück"><img src="/wp-content/themes/bones-less/library/images/g5.jpg"></a>
 													</div>
 													<div class="input-13">
-														<a href="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g5.jpg" rel="lightbox" title="Edle Rose"><img src="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g6.jpg"></a>
+														<a href="/wp-content/themes/bones-less/library/images/g5.jpg" rel="lightbox" title="Edle Rose"><img src="/wp-content/themes/bones-less/library/images/g6.jpg"></a>
 													</div>
 													<div class="input-13">
-														<a href="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g7.jpg" rel="lightbox" title="Baby"><img src="<?php print get_theme_root_uri(); ?>/bones-less/library/images/g7.jpg"></a>
+														<a href="/wp-content/themes/bones-less/library/images/g7.jpg" rel="lightbox" title="Baby"><img src="/wp-content/themes/bones-less/library/images/g7.jpg"></a>
 													</div>
 												</div>
 											</div>
@@ -361,7 +412,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>Kartentext</p>
 												</div>
-												<div class="input-70"><span class="wpcf7-form-control-wrap k-te IhreNachriht"><textarea name="kartentext" cols="40" rows="9" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false"></textarea></span></div>
+												<div class="input-70"><span class="wpcf7-form-control-wrap k-te IhreNachriht">
+													<?= $Html->Form->textarea('kartentext', false, ['cols' => '40', 'rows' => '9', 'class' => 'wpcf7-form-control wpcf7-textarea', 'aria-invalid' => 'false' ]) ?>
+													<?= $val->error('kartentext') ?>
+												</span></div>
 
 											</div>
 										</div>
@@ -370,79 +424,123 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 												<div class="input-30">
 													<p>Anlass</p>
 												</div>
-												<div class="input-70"> 
-													<?php 
-													if(isset($_POST['anlass_bar'])){ 
-														$anlass = $_POST['anlass_bar']; 
-													}
-													else{
-														$anlass = 0;
-
-													}
-													?>
-													<select name="anlass">
-														<option value="0" <?php if($anlass == '0') print 'selected'; ?>>ANLASS</option>
-														<option value="GEBURTSTAG" <?php if($anlass == 'GEBURTSTAG') print 'selected'; ?>>GEBURTSTAG</option>	
-														<option value="ÜBERRASCHUNG" <?php if($anlass == 'ÜBERRASCHUNG') print 'selected'; ?>>ÜBERRASCHUNG</option>
-														<option value="LIEBESERKLÄRUNG" <?php if($anlass == 'LIEBESERKLÄRUNG') print 'selected'; ?>>LIEBESERKLÄRUNG</option>
-														<option value="HOCHZEIT" <?php if($anlass == 'HOCHZEIT') print 'selected'; ?>>HOCHZEIT</option>
-														<option value="GEBURT" <?php if($anlass == 'GEBURT') print 'selected'; ?>>GEBURT</option>
-														<option value="DEKORATION/EVENT/FIRMENGESCHENK" <?php if($anlass == 'DEKORATION/EVENT/FIRMENGESCHENK') print 'selected'; ?>>DEKORATION/EVENT/FIRMENGESCHENK</option>	
-														<option value="TRAUERFLORISTIK/GRABSCHMUCK" <?php if($anlass == 'TRAUERFLORISTIK/GRABSCHMUCK') print 'selected'; ?>>TRAUERFLORISTIK/GRABSCHMUCK</option>							
-													</select>
+												<div class="input-70">
+												<?php
+												echo $Html->Form->select('anlass', false, [
+													"" => 'Anlass',
+													"Geburtstag" => 'Geburtstag',
+													"Überraschung" => 'Überraschung',
+													"Liebeserklärung" => 'Liebeserklärung',
+													"Hochzeit" => 'Hochzeit',
+													"Geburt" => 'Geburt',
+													"Dekoration/Event/Firmengeschenk" => 'Dekoration/Event/Firmengeschenk',
+													"Trauerfloristik/Grabschmuck" => 'Trauerfloristik/Grabschmuck',
+												], [
+													'selected' => $_POST['anlass'],
+												]);
+												?>
+												<?= $val->error('anlass') ?>
 												</div>
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>Lieferdatum</p>
 												</div>
-												<div class="input-70"> 
-													<?php 
-													if(isset($_POST['lieferdatum_bar'])){ 
-														$date = $_POST['lieferdatum_bar']; 
-													}
-													else{
-														$date = '';
-
-													}
-													?>
-													<input type="text" name="date" id="date" placeholder="Tag/Monat/Jahr" value="<?php print $date; ?>">
+												<div class="input-70">
+													<?= $Html->Form->input('lieferdatum', false, ['placeholder' => 'Tag/Monat/Jahr', 'class' => 'date' ]) ?>
+													<?= $val->error('lieferdatum') ?>
 												</div>
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>Zeit</p>
 												</div>
-												<div class="input-70"> 
-													<!-- 													<input type="text" name="time" id="timepicker" placeholder="H:M"> -->
-													<select name="time">
-														<option value="VORMITTAG">VORMITTAG</option>
-														<option value="NACHMITTAG">NACHMITTAG</option>	
-
-													</select>
-												</div>
+												<!-- <input type="text" name="time" id="timepicker" placeholder="H:M"> -->
+												<?php
+												echo $Html->Form->select('time', false, [
+													"VORMITTAG" => 'VORMITTAG',
+													"NACHMITTAG" => 'NACHMITTAG',
+												], [
+													'selected' => $_POST['time'],
+													'wrapper' => ['tag' => 'div', 'class' => 'input-70']
+												]);
+												?>
+												<?= $val->error('time') ?>
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>ZUSTELLUNG</p>
 												</div>
-												<div class="input-70"> 
-													<select name="anlass">
-														<option value="HAUSLIEFERDIENST (ZÜRICH UND UMGEBUNG)">HAUSLIEFERDIENST (ZÜRICH UND UMGEBUNG)</option>
-														<option value="POSTVERSAND">POSTVERSAND</option>	
-														<option value="ABHOLUNG IM BLUMENHAUS WIEDIKON">ABHOLUNG IM BLUMENHAUS WIEDIKON</option>							
-													</select>
-												</div>
+												<?php
+												echo $Html->Form->select('zustellung', false, [
+                                                    "HAUSLIEFERDIENST (ZÜRICH UND UMGEBUNG)" => 'HAUSLIEFERDIENST (ZÜRICH UND UMGEBUNG)',
+                                                    "POSTVERSAND" => 'POSTVERSAND',
+                                                    "ABHOLUNG IM BLUMENHAUS WIEDIKON" => 'ABHOLUNG IM BLUMENHAUS WIEDIKON'
+												], [
+													'selected' => $_POST['zustellung'],
+													'wrapper' => ['tag' => 'div', 'class' => 'input-70']
+												]);
+												?>
 											</div>
 											<div class="input-100 clearfix">
 												<div class="input-30">
 													<p>Anmerkungen</p>
 												</div>
-												<div class="input-70"><span class="wpcf7-form-control-wrap t-ir IhreNachriht"><textarea name="anmerkungen" cols="40" rows="9" class="wpcf7-form-control wpcf7-textarea" aria-invalid="false"></textarea></span></div>
+												<div class="input-70"><span class="wpcf7-form-control-wrap t-ir IhreNachriht huge">
+													<?= $Html->Form->textarea('anmerkungen', false, ['cols' => '40', 'rows' => '9', 'class' => 'wpcf7-form-control wpcf7-textarea', 'aria-invalid' => 'false' ]) ?>
+												</span></div>
 											</div>
 										</div>
-									</div>
+                                    </div>
 
+                                    <div class="clearfix">
+                                        <div class="half-15">
+                                            <div class="input-100 clearfix">&nbsp;</div>
+                                        </div>
+                                        <div class="half-15">
+                                            <div class="delivery-cost">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <td colspan="3">IHRE BESTELLUNG:</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="flower-cost-td">
+                                                                <?= $Html->Form->input('flower-cost', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
+                                                            <td>BLUMENWERT +</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="karte-cost-td">
+                                                                <?= $Html->Form->input('karte-cost', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
+                                                            <td>KARTE</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="delivery-cost-td">
+                                                                <?= $Html->Form->input('delivery-cost', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
+                                                            <td id="delivery-cost-caption">LIEFERUNG</td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td>CHF</td>
+                                                            <td id="cart-total-td">
+                                                                <?= $Html->Form->input('cart-total', false, ['class' => 'cart-cost', 'value' => '-']) ?>
+                                                            </td>
+                                                            <td>TOTAL</td>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
 
 									<h3 class="underline">ALLE FELDER AUSGEFÜLLT, Dann Freuen Wir Uns Auf Ihre...</h3>
 
@@ -509,9 +607,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 </div> <!-- end #inner-content -->
 
+<?php //get_sidebar('form-bar'); ?>
 
 </div> <!-- end #content -->
 
 
 
 <?php get_footer(); ?>
+<script>
+jQuery(function($){
+	if ($('input[name=sameAsBilling]').is(':checked')) {
+		$('.whenNotSameAsBilling').attr('disabled', 'disabled');
+	}
+
+	if ($('#karte').is(':checked')) {
+		$('#Aus_karte').attr('disabled', 'disabled');
+	}
+});
+</script>

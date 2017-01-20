@@ -36,6 +36,8 @@ right up top and clean.
 
 // we're firing all out initial functions at the start
 
+use Rsu\Settings\Option;
+
 add_action('after_setup_theme','bones_ahoy', 15);
 
 
@@ -168,7 +170,7 @@ function bones_head_cleanup() {
 
   // remove Wp version from scripts
 
-	add_filter( 'script_loader_src', 'bones_remove_wp_ver_css_js', 9999 );
+//	add_filter( 'script_loader_src', 'bones_remove_wp_ver_css_js', 9999 );
 
 
 
@@ -311,8 +313,16 @@ function bones_scripts_and_styles() {
     wp_enqueue_script( 'bones-js' );
 
 
+    if ( is_page_template( 'page-bestellen.php' ) ) {
+        wp_enqueue_script('bestellen', get_stylesheet_directory_uri() . '/library/js/bestellen.js', ['jquery'], '2.4', true);
 
-}
+        wp_localize_script('bestellen', '$APP_DATA', [
+            'card_cost' => Option::get('card_cost'),
+            'delivery_cost_on_request' => Option::get('delivery_cost_on_request'),
+            'delivery_cost' => Option::get_csv_lines('delivery_cost'),
+        ]);
+    }
+    }
 
 }
 

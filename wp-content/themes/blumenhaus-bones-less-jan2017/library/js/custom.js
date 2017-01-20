@@ -4,8 +4,9 @@ jQuery(document).ready(function($) {
 		$(this).siblings('input').click();
 
 	});
-	
-	$( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+
+    $( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	$( ".date" ).datepicker({ dateFormat: 'dd/mm/yy' });
 
 	var head = $(".header.wrap").width();
 	$("#object").css('width', head + 160);
