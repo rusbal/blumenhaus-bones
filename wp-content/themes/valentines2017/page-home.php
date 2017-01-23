@@ -35,7 +35,7 @@ Template Name: Homepage
 						if ( has_post_thumbnail() ) {
 							the_post_thumbnail_url( 'full' ); 
 						}  ?>');">
-						<canvas id="canvas"></canvas>
+						<canvas id="canvas" style="width:100%"></canvas>
 						
 						<div class="image-above" > 
 							<div class="wrap">

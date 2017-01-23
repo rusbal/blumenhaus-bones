@@ -32,7 +32,18 @@
 
 		<?php wp_footer(); ?>
 
-		
+<!-- By Raymond: Falling hearts for Valentines -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+<style>
+.dot{
+  width:35px;
+  height:35px;
+  position:absolute;
+  background: url(http://www.clipartqueen.com/image-files/red-lobed-fall-clipart-leaf.png);
+  background-size: 100% 100%;
+}
+</style>
+<!-- By Raymond: Falling hearts for Valentines -->	
 		
 	</body>
 
