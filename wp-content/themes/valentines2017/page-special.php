@@ -80,6 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
 	mail('info@blumenhaus-wiedikon.ch', 'Spezialangebot', $message, $headers);
+
+			header("Location: " . $_SERVER['HTTP_HOST'] . "/danke-fur-ihre-bestellung");
+			exit;
 }
 
 

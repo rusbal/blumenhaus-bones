@@ -71,7 +71,6 @@ $Html = htmlHelper();
 											"Fuchsia" => 'Fuchsia',
 											"Orange" => 'Orange',
 											"Violett" => 'Violett',
-											"Blau" => 'Blau',
 											"Grün" => 'Grün',
 										]);
 										?>

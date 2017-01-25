@@ -146,9 +146,9 @@ while ( $the_query->have_posts() ) : $the_query->the_post();
 
 
 <?php wp_reset_postdata(); ?>
-<article class="youtube-video">
+<div class="video-container">
 <?php the_field('youtube_people'); ?>
-</article>
+</div>
 
 <div class="pager">
 	<div><?php print get_next_posts_link('Older', $the_query->max_num_pages) ?></div>
