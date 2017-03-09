@@ -344,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 													"Fuchsia" => 'Fuchsia',
 													"Orange" => 'Orange',
 													"Violett" => 'Violett',
-													"Blau" => 'Blau',
+													//"Blau" => 'Blau',
 													"Grün" => 'Grün',
 												], [
 													'selected' => $_POST['blumenfarbe'],

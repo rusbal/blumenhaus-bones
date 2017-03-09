@@ -1,0 +1,13 @@
+.cw-uncertain-warning-box {
+	border-color: red;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.cw-uncertain-warning-box  > .cw-uncertain-warning-text {
+	padding: 10px;
+}

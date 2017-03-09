@@ -1,0 +1,96 @@
+.payenginecw-renewal {
+	margin-top: 5px;
+	margin-botton: 5px;
+}
+
+.payenginecw-transaction-table .payenginecw-details-row {
+	display: none;
+}
+
+.payenginecw-transaction-table .payenginecw-main-row .payenginecw-more-details-button {
+	cursor: pointer;
+}
+
+.payenginecw-transaction-table .payenginecw-main-row.active .payenginecw-more-details-button {
+	display: none;
+}
+
+.payenginecw-transaction-table .payenginecw-main-row.active td {
+	border-bottom-color: #f0f0f0;
+}
+
+.payenginecw-transaction-table .payenginecw-details-row.active {
+	display: table-row;
+}
+
+.payenginecw-transaction-table label {
+	float: none;
+	font-weight: normal;
+}
+
+.payenginecw-transaction-table .payenginecw-main-row .payenginecw-less-details-button {
+	display: none;
+	cursor: pointer;
+}
+
+.payenginecw-transaction-table .payenginecw-main-row.active .payenginecw-less-details-button {
+	display: inline-block;
+}
+
+.payenginecw-transaction-table .label-box {
+	float: left;
+	width: 380px;
+	margin-right: 75px;
+	padding: 3px;
+}
+
+.payenginecw-transaction-table .label-box .label-title {
+	width: 50%;
+	font-weight: bold;
+	float: left;
+}
+
+.payenginecw-transaction-table .label-box .label-value {
+	width: 50%;
+	float: right;
+}
+
+.payenginecw-box-labels {
+	overflow: auto;
+	width: 100%;
+	margin-bottom: 2em;
+}
+
+.payenginecw-transaction-table .box {
+	border-top: solid 1px #FFF;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	padding: 0.1em 0.8em 0.8em 0.8em;
+}
+
+.payenginecw-transaction-table .box h4 {
+	margin: 0.6em 0;
+}
+
+.multi-control > .controls {
+	display: inline;
+}
+
+
+table th {
+	text-align: left;
+}
+
+table .left-align {
+	text-align: left;
+}
+
+table .right-align {
+	text-align: right;
+}
+
+.closable-box {
+	text-align: right;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}

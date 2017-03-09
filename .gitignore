@@ -3,3 +3,4 @@ wp-config.php
 vendor
 *.cache
 node_modules
+server.img*

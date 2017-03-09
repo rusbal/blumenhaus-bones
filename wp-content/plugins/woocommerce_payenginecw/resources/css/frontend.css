@@ -1,0 +1,228 @@
+.payenginecw-control-group {
+	margin-bottom: 15px;
+}
+
+.payenginecw-control-label {
+	font-size: 14px;
+	display: inline-block;
+	padding: 6px 15px;
+	width: 120px;
+	font-size: 14px;
+	text-align: right;
+	float: left;
+}
+
+.payenginecw-control-label .payenginecw-required {
+	color: #990000;
+}
+
+.payenginecw-control-group > label+.payenginecw-controls {
+	margin-left: 140px;
+}
+
+ul.payment_methods .payenginecw-control-group > label+.payenginecw-controls
+	{
+	margin-left: 140px;
+}
+
+.payenginecw-description {
+	margin-left: 140px;
+}
+
+.payenginecw-error {
+	margin-left: 140px;
+	color: #D8000C;
+}
+
+.payenginecw-element-error input[type='text'],
+	.payenginecw-element-error input[type='password'],
+	.payenginecw-element-error select {
+	border-color: #D8000C;
+}
+
+.payenginecw-card-cvc input[type='text'] {
+	width: 60px;
+}
+
+.payenginecw-multi-control .payenginecw-controls {
+	display: inline-block;
+}
+
+.payenginecw-multi-control {
+	overflow: auto;
+}
+
+.payenginecw-payment-form-confirm {
+	margin-left: 140px;
+}
+
+.payenginecw-iframe {
+	width: 100%;
+	border: none;
+}
+
+.payenginecw-widget {
+	width: 100%;
+	border: none;
+}
+
+
+.payenginecw-alias-hidden-new {
+	display: none;
+}
+
+.card-brand-image-box {
+	display: inline-block;
+}
+
+.card-brand-image-color.brand-is-deselected {
+	display: none;
+}
+
+.card-brand-image-grey.brand-is-selected {
+	display: none;
+}
+
+.entry-content .card-brand-image-selection img,
+	.card-brand-image-selection img {
+	width: auto;
+	height: 25px;
+	padding-right: 4px;
+	padding-bottom: 4px;
+	margin: 0 .5em 0 0;
+}
+
+.invalid-card-number, .invalid-card-number:focus, .invalid-cvc-number,
+	.invalid-cvc-number:focus, .invalid-issuer-number,
+	.invalid-issuer-number:focus {
+	border-color: #fb7f88;
+	background-image: url(../image/invalid.png);
+	background-position: 95% center;
+	background-repeat: no-repeat;
+}
+
+.valid-card-number, .valid-card-number:focus, .valid-cvc-number,
+	.valid-cvc-number:focus, .valid-issuer-number, .valid-issuer-number:focus
+	{
+	background-image: url(../image/valid.png);
+	background-position: 95% center;
+	background-repeat: no-repeat;
+}
+
+.payenginecw-multi-control .payenginecw-select-field select {
+	margin-right: 1em;
+}
+
+.payenginecw-card-number .payenginecw-multi-control select {
+	float: none;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+}
+
+.card-brand-image-selection {
+	margin-top: 0.5em;
+	cursor: pointer;
+}
+
+.payenginecw-card-number .payenginecw-html-field {
+	display: block;
+}
+
+.payenginecw-back-to-checkout {
+	margin-top: 10px;
+	font-size: small;
+}
+
+.payenginecw-requires-second-run {
+	display: none;
+}
+
+.payenginecw .col2-set {
+	width: 100%;
+	margin-bottom: 24 px
+}
+
+.payenginecw .col2-set:after, .woocommerce .col2-set:before
+	{
+	content: " ";
+	display: table;
+}
+
+.payenginecw .col2-set :after {
+	clear: both;
+}
+
+.payenginecw .col2-set .col-1 {
+	float: left;
+	width: 48%;
+}
+
+.payenginecw .col2-set .col-2 {
+	float: right;
+	width: 48%;
+}
+
+.payenginecw-external-checkout-line-items-table .head-name {
+	width: 60%;
+}
+
+.payenginecw-external-checkout-line-items-table .head-quantity {
+	width: 10%;
+}
+
+.payenginecw-external-checkout-line-items-table .head-total {
+	width: 30%;
+}
+
+.payenginecw-external-checkout-line-items-table .product-quantity {
+	text-align: center;
+}
+
+.payenginecw-external-checkout-additional {
+	width: 100%;
+	margin-bottom: 24px
+}
+
+.payenginecw-external-checkout-terms {
+	width: 100%;
+	margin-bottom: 12px
+}
+
+.payenginecw-external-checkout-confirm-buttons {
+	margin-bottom: 24px
+}
+
+.payenginecw-external-checkout-account input.button {
+	margin-top: 12px
+}
+
+.cw-external-checkouts {
+	overflow: hidden;
+	margin-bottom: 12px;
+}
+
+.cw-external-checkouts .cw-external-checkout {
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 1em;
+}
+
+.payenginecw-external-checkout-customer-details {
+	margin-bottom: 24px;
+}
+
+.payenginecw-external-checkout-billing {
+	margin-bottom: 24px;
+}
+
+.payenginecw-external-checkout-shipping {
+	margin-bottom: 24px;
+}
+
+.payenginecw-external-checkout-login-info-message {
+	margin-bottom: 24px;
+}
+
+.woocommerce-checkout #payment div.payment_box p:nth-last-of-type(1) {
+	margin-bottom: 0px;
+}
